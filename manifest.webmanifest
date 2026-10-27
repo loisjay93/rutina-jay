@@ -1,7 +1,7 @@
 {
   "name": "Rutina Jay",
   "short_name": "Rutina Jay",
-  "description": "Rutinas de entrenamiento de lunes a viernes.",
+  "description": "Rutinas de entrenamiento de lunes a viernes, con reloj de asaltos, historial de pesos y diario.",
   "lang": "es",
   "start_url": "./",
   "scope": "./",

@@ -8,12 +8,12 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="description" content="Rutinas de entrenamiento de lunes a viernes: peleador, hombre, mujer y mamá en casa.">
+<meta name="description" content="Rutinas de entrenamiento de lunes a viernes: peleador, fuerza general, énfasis en glúteo y mamá en casa. Reloj de asaltos, historial de pesos y diario en el teléfono.">
 <style>[hidden]{display:none!important}body{margin:0}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
-/* Layout: una sola columna tipo app de gimnasio — barra de programas, chips de días, tarjetas de ejercicio con demo animada, cronómetro fijo abajo */
+/* Layout: una sola columna tipo app de gimnasio — barra de programas, chips de días, tarjetas de ejercicio con demo animada, reloj fijo abajo */
 :root {
   --bg: #eef1f5; --surface: #ffffff; --surface-2: #e3e8ef; --ink: #121a24; --muted: #5a6676; --line: #d3dae3;
   --gold: #b7791f; --gold-soft: #f6e7c8; --work: #c2412d; --rest: #127a6e; --figure: #121a24; --figure-far: #8b97a7; --floor: #c9d1dc;
@@ -28,68 +28,123 @@
 * { box-sizing: border-box }
 body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.45; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
-.wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 18px 140px; }
-header.top { display: grid; gap: 4px; }
+.wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 18px 200px; }
+header.top { display: grid; gap: 6px; }
 .marca { font-family: var(--display); font-weight: 900; font-size: clamp(2.4rem, 9vw, 3.6rem); line-height: .9; letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; }
 .marca span { color: var(--gold); }
 .sub { color: var(--muted); font-size: .95rem; }
 .programas { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 12px 10px; display: grid; gap: 10px; }
 .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: var(--surface-2); padding: 4px; border-radius: 12px; }
-.tabs button { font-family: var(--display); font-weight: 800; font-size: 1.15rem; letter-spacing: .04em; text-transform: uppercase; border: 0; border-radius: 9px; padding: 10px 6px; background: transparent; color: var(--muted); cursor: pointer; }
+.tabs button { font-family: var(--display); font-weight: 800; font-size: 1.15rem; letter-spacing: .04em; text-transform: uppercase; border: 0; border-radius: 9px; min-height: 44px; padding: 8px 4px; background: transparent; color: var(--muted); cursor: pointer; }
 .tabs button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 0 var(--line); }
 .tabs button[aria-pressed="true"] b { color: var(--gold); }
 .dias { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-.dias button { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 10px; padding: 7px 2px; cursor: pointer; display: grid; gap: 1px; font-family: var(--body); }
+.dias button { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 10px; min-height: 48px; padding: 6px 2px; cursor: pointer; display: grid; gap: 1px; align-content: center; font-family: var(--body); }
 .dias button b { font-family: var(--display); font-weight: 800; font-size: 1.05rem; letter-spacing: .05em; text-transform: uppercase; }
 .dias button small { font-size: .7rem; color: var(--muted); line-height: 1.1; }
+.dias button .est { font-family: var(--mono); font-size: .68rem; min-height: .8rem; }
 .dias button[aria-pressed="true"] { border-color: var(--gold); background: var(--gold-soft); }
 .dias button .hoy { color: var(--gold); font-weight: 700; }
-button:focus-visible, .serie:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.dias button .ok { color: var(--rest); font-weight: 700; }
+button:focus-visible, .serie:focus-visible, input:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 .dia-cab { display: grid; gap: 6px; margin-top: 8px; }
 .dia-cab h2 { font-family: var(--display); font-weight: 900; font-size: clamp(1.9rem, 7vw, 2.6rem); line-height: 1; text-transform: uppercase; margin: 0; text-wrap: balance; }
 .meta { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip { font-family: var(--mono); font-size: .75rem; padding: 3px 8px; border-radius: 999px; background: var(--surface-2); color: var(--muted); }
+.chip.oro { background: var(--gold-soft); color: var(--ink); }
 .progreso { height: 6px; border-radius: 6px; background: var(--surface-2); overflow: hidden; }
 .progreso i { display: block; height: 100%; width: 0; background: var(--gold); transition: width .3s; }
+.prog-txt { font-family: var(--mono); font-size: .78rem; color: var(--muted); }
+.aviso { border: 1px solid var(--line); border-left: 4px solid var(--gold); background: var(--surface); border-radius: 10px; padding: 10px 12px; font-size: .92rem; display: grid; gap: 8px; }
+.aviso.salud { border-left-color: var(--work); }
+.aviso b { font-family: var(--display); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; font-size: 1rem; }
+.aviso button, .boton { justify-self: start; min-height: 44px; padding: 8px 14px; border-radius: 9px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font-family: var(--body); font-weight: 600; font-size: .95rem; cursor: pointer; }
+.boton.oro { background: var(--gold); border-color: var(--gold); color: #10151c; font-weight: 700; }
+.aviso.regla { display: block; padding-block: 0; }
+.regla summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-weight: 600; }
+.regla ul { margin: 0 0 12px; padding-left: 20px; display: grid; gap: 4px; }
 .bloque { margin-top: 18px; display: grid; gap: 10px; }
-.bloque > h3 { font-family: var(--display); font-weight: 800; font-size: 1.05rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0; }
-.lista-simple { margin: 0; padding: 12px 14px 12px 32px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; display: grid; gap: 4px; }
+.bloque > h3, .panel > h3 { font-family: var(--display); font-weight: 800; font-size: 1.05rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.lista-simple { margin: 0; padding: 12px 14px 12px 32px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; display: grid; gap: 6px; }
 .ej { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 0; overflow: hidden; }
 .ej.hecho { border-color: var(--rest); }
+.ej.fuera { opacity: .6; }
 .demo { background: var(--surface-2); display: grid; place-items: center; position: relative; }
 .demo canvas { width: 150px; height: 120px; display: block; }
 .demo .num { position: absolute; top: 6px; left: 8px; font-family: var(--display); font-weight: 900; font-size: 1.3rem; color: var(--muted); }
-.info { padding: 10px 12px 12px; display: grid; gap: 6px; min-width: 0; }
+.info { padding: 10px 12px 12px; display: grid; gap: 7px; min-width: 0; }
 .info h4 { font-family: var(--display); font-weight: 800; font-size: 1.35rem; line-height: 1.05; margin: 0; text-transform: uppercase; letter-spacing: .02em; text-wrap: balance; }
 .dosis { font-family: var(--mono); font-weight: 700; font-size: .95rem; display: flex; flex-wrap: wrap; gap: 4px 12px; }
 .dosis .r { color: var(--rest); font-weight: 500; }
 .tecnica { color: var(--muted); font-size: .92rem; margin: 0; }
+.aprox { font-size: .85rem; margin: 0; padding: 6px 8px; border-radius: 8px; background: var(--surface-2); }
+.linea-mama { font-size: .85rem; margin: 0; color: var(--work); font-weight: 600; }
+.nota-suave { font-size: .85rem; margin: 0; color: var(--gold); font-weight: 600; }
+.carga { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.carga label { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: .85rem; color: var(--muted); }
+.carga input { width: 82px; min-height: 44px; font-size: 16px; font-family: var(--mono); padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+.ultima { font-size: .85rem; margin: 0; color: var(--muted); font-family: var(--mono); }
+.ultima .sube { color: var(--gold); font-family: var(--body); }
 .series { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
-.serie { min-width: 40px; height: 34px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font-family: var(--mono); font-weight: 700; cursor: pointer; padding: 0 8px; }
+.serie { min-width: 44px; min-height: 44px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font-family: var(--mono); font-weight: 700; font-size: 1rem; cursor: pointer; padding: 0 10px; }
 .serie[aria-pressed="true"] { background: var(--rest); border-color: var(--rest); color: var(--surface); }
-.nota { margin-top: 22px; color: var(--muted); font-size: .85rem; border-top: 1px solid var(--line); padding-top: 12px; }
-.reloj { position: fixed; left: 0; right: 0; bottom: 0; z-index: 8; background: var(--surface); border-top: 1px solid var(--line); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 10px calc(10px + env(safe-area-inset-bottom, 0px)); }
-.reloj .in { max-width: 760px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; }
-.reloj .q { min-width: 0; }
-.reloj .q small { display: block; font-family: var(--display); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; font-size: .85rem; }
+.seguidas { min-height: 44px; }
+.lamina summary { cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: var(--gold); }
+.lamina figure { margin: 6px 0 0; display: grid; gap: 6px; }
+.lamina img { width: 100%; max-width: 300px; height: auto; border-radius: 10px; display: block; background: #2a2e33; }
+.lamina figcaption { font-size: .85rem; color: var(--muted); }
+.diario-hoy textarea { width: 100%; min-height: 88px; font: inherit; font-size: 16px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); resize: vertical; }
+.diario-hoy small { color: var(--muted); font-size: .8rem; }
+.panel { margin-top: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 12px; }
+.fila { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ajuste { display: grid; grid-template-columns: 1fr 44px 76px 44px; gap: 8px; align-items: center; }
+.ajuste span { font-weight: 600; }
+.ajuste button { min-height: 44px; border-radius: 9px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font-family: var(--mono); font-weight: 700; font-size: 1.2rem; cursor: pointer; }
+.ajuste output { font-family: var(--mono); font-weight: 700; font-size: 1.2rem; text-align: center; }
+.preset[aria-pressed="true"] { border-color: var(--gold); background: var(--gold-soft); }
+.check { display: flex; gap: 10px; align-items: center; min-height: 44px; cursor: pointer; }
+.check input { width: 24px; height: 24px; accent-color: var(--gold); }
+.diario-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.diario-lista li { border-top: 1px solid var(--line); padding-top: 8px; font-size: .92rem; }
+.diario-lista li span { color: var(--muted); }
+.offline { background: var(--gold-soft); border: 1px solid var(--gold); border-radius: 10px; padding: 8px 12px; font-size: .9rem; margin-bottom: 10px; }
+.nota { margin-top: 22px; color: var(--muted); font-size: .85rem; border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: 6px; }
+.nota p { margin: 0; }
+.reloj { position: fixed; left: 0; right: 0; bottom: 0; z-index: 8; background: var(--surface); border-top: 1px solid var(--line); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 10px calc(10px + env(safe-area-inset-bottom, 0px)); box-shadow: 0 -6px 18px rgba(0,0,0,.18); }
+.reloj .in { max-width: 760px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "q t b"; gap: 8px 12px; align-items: center; }
+.reloj .q { grid-area: q; min-width: 0; }
+.reloj .q small { display: block; font-family: var(--display); font-weight: 800; letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; }
 .reloj .q .que { color: var(--muted); font-size: .85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.reloj .t { font-family: var(--mono); font-weight: 700; font-size: 2.2rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.reloj .t { grid-area: t; font-family: var(--mono); font-weight: 700; font-size: 2.2rem; line-height: 1; font-variant-numeric: tabular-nums; }
 .reloj.trabajo small, .reloj.trabajo .t { color: var(--work); }
-.reloj.descanso small, .reloj.descanso .t { color: var(--rest); }
-.reloj .bot { display: flex; gap: 6px; }
-.reloj .bot button { border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 9px; padding: 8px 10px; font-family: var(--mono); font-weight: 700; cursor: pointer; }
+.reloj.descanso small, .reloj.descanso .t, .reloj.cambio small, .reloj.cambio .t { color: var(--rest); }
+.reloj.pausado .t { opacity: .5; }
+.reloj .bot { grid-area: b; display: flex; gap: 6px; }
+.reloj .bot button { min-height: 44px; min-width: 44px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 9px; padding: 8px 12px; font-family: var(--mono); font-weight: 700; font-size: .95rem; cursor: pointer; }
+.reloj .bot #r-fin { background: var(--gold); border-color: var(--gold); color: #10151c; }
+@media (max-width: 600px) {
+  .reloj .in { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "q t" "b b"; }
+  .reloj .bot { display: grid; grid-template-columns: 1fr 1fr 1.3fr 52px; }
+}
 @media (max-width: 460px) {
   .ej { grid-template-columns: 1fr; }
   .demo canvas { width: 100%; max-width: 300px; height: auto; aspect-ratio: 5 / 4; }
+  .dias button .foco { display: none; }
+}
+@media (max-width: 380px) {
+  .reloj .t { font-size: 1.8rem; }
+  .tabs button { font-size: 1rem; }
 }
 @media (prefers-reduced-motion: reduce) { .progreso i { transition: none; } }
 </style>
 
 </head><body>
 <div class="wrap">
+  <div class="offline" id="offline" role="status" hidden>Sin conexión: estás usando la copia guardada en el teléfono. Todo sigue funcionando.</div>
   <header class="top">
     <div class="marca">Rutina <span>Jay</span></div>
-    <div class="sub">Cinco días de entrenamiento: Jay (peleador avanzado), Hombre, Mujer y Mamá (en casa, sin equipo). Toca una serie al terminarla y arranca el descanso.</div>
+    <div class="sub">Cinco días de entrenamiento: Jay (peleador avanzado), Hombre (fuerza general), Mujer (intermedio, énfasis en glúteo) y Mamá (en casa, bajo impacto). Toca una serie al terminarla y arranca el descanso.</div>
+    <div class="meta" id="cab-meta"></div>
   </header>
 
   <nav class="programas" aria-label="Programa y día">
@@ -99,15 +154,28 @@ button:focus-visible, .serie:focus-visible { outline: 3px solid var(--gold); out
 
   <main id="dia"></main>
 
-  <p class="nota">Jay, Hombre y Mujer son rutinas de nivel avanzado para personas sanas y ya entrenadas; Mamá es de nivel inicial a medio y de bajo impacto, sin abdominales tipo crunch. Durante el embarazo o después del parto, pide primero el visto bueno de tu médico; si notas separación abdominal (diástasis) o pérdidas de orina, consulta a un fisioterapeuta de suelo pélvico. Calienta siempre, cuida la técnica antes que la carga y para si sientes dolor (no cansancio). Si tienes una lesión o una condición médica, consulta antes con un profesional. Las figuras muestran el movimiento; el ritmo real es el que marca la dosis.</p>
+  <section class="panel" id="p-asaltos" aria-labelledby="t-asaltos"></section>
+  <section class="panel" id="p-diario" aria-labelledby="t-diario"></section>
+  <section class="panel" id="p-ajustes" aria-labelledby="t-ajustes"></section>
+
+  <div class="nota">
+    <p><b>Esto no es consejo médico ni una rehabilitación.</b> Antes de empezar, y si tienes una lesión o una condición médica, consulta con un profesional.</p>
+    <p>Para si el dolor no es el cansancio normal del esfuerzo. Para y consulta si hay mareo, dolor en el pecho, sangrado, hinchazón rara de una pantorrilla, hormigueo o dolor agudo en una articulación.</p>
+    <p>Embarazo y posparto: el programa Mamá es para casa, de bajo impacto, y se usa solo con el visto bueno de tu médico. No es una rutina de embarazo ni un tratamiento de suelo pélvico o de diástasis. Si hay pérdidas de orina, pesadez pélvica o el abdomen se levanta en forma de cono por el centro, para ese ejercicio y consulta a un fisioterapeuta de suelo pélvico.</p>
+    <p>Cuello: la mano empuja poco y la cabeza no se mueve. Con barra, usa soportes de seguridad o un compañero. En los saltos, aterrizaje silencioso.</p>
+    <p>Jay y Hombre son de nivel avanzado, Mujer es intermedio con énfasis en glúteo y Mamá es de nivel inicial a medio. Elige por objetivo: cualquiera puede seguir Hombre (fuerza general) o Mujer (énfasis en glúteo). Las figuras muestran el movimiento; el ritmo real es el que marca la dosis.</p>
+  </div>
 </div>
 
 <div class="reloj" id="reloj" hidden>
   <div class="in">
     <div class="q"><small id="r-modo" role="status" aria-live="polite">Descanso</small><div class="que" id="r-que">—</div></div>
-    <div style="display:flex;gap:10px;align-items:center">
-      <div class="t" id="r-t">0:00</div>
-      <div class="bot"><button id="r-mas" type="button" aria-label="Sumar 15 segundos">+15</button><button id="r-fin" type="button">Saltar</button></div>
+    <div class="t" id="r-t">0:00</div>
+    <div class="bot">
+      <button id="r-pausa" type="button">Pausa</button>
+      <button id="r-mas" type="button" aria-label="Sumar 15 segundos">+15</button>
+      <button id="r-fin" type="button">Saltar</button>
+      <button id="r-x" type="button" aria-label="Parar el reloj">✕</button>
     </div>
   </div>
 </div>
@@ -135,10 +203,13 @@ const completa = (p) => ({ ...BASE, ...p, la: p.la || BASE.la, ra: p.ra || BASE.
 
 // ---------------- biblioteca de movimientos ----------------
 // cada movimiento: cuadros clave (se repiten en bucle) · vista · apoyo ('suelo' por defecto, 'barra' colgado, 'paralelas') · objeto en las manos
+// extras: ancla (pie que no se mueve), silla (apoyo bajo las manos), bancoAtras (banco bajo el pie de atrás), banda (banda elástica)
 const G = { t: 6, la: [40, 168], ra: [28, 162], ll: [22, 6], rl: [-24, -12] }; // guardia de pelea
 const PLANCHA = { t: 63, la: [0, 0], ra: [0, 0], ll: [-63, -63], rl: [-63, -63] };
 const P_ANTEBRAZO = { t: 76, la: [0, 90], ra: [0, 90], ll: [-76, -76], rl: [-76, -76] };
+const P_RODILLAS = { t: 70, la: [0, 90], ra: [0, 90], ll: [-71, -90], rl: [-71, -90] };
 const CUCLILLAS = { t: 66, la: [8, 0], ra: [2, 0], ll: [80, -30], rl: [76, -34] };
+const SILLA = { t: 40, la: [20, 20], ra: [20, 20], ll: [-40, -40], rl: [-40, -40] };
 const MOV = {
   sombra: { k: [G, { ...G, la: [88, 90] }, G, { ...G, t: 16, ra: [86, 88], rl: [-30, -14] }], ms: 330 },
   combo: { k: [G, { ...G, la: [88, 90] }, { ...G, t: 16, ra: [86, 88], rl: [-30, -14] }, { ...G, t: -4, la: [96, 128] }, G], ms: 300 },
@@ -152,36 +223,45 @@ const MOV = {
   flexion: { k: [PLANCHA, { t: 80, la: [-80, 40], ra: [-78, 38], ll: [-80, -80], rl: [-80, -80] }], ms: 600 },
   flexionPalmada: { k: [{ t: 80, la: [-80, 40], ra: [-78, 38], ll: [-80, -80], rl: [-80, -80] }, { ...PLANCHA, la: [12, 6], ra: [8, 4], alto: 12 }], ms: 380 },
   plancha: { k: [P_ANTEBRAZO, { ...P_ANTEBRAZO, t: 77, ll: [-77, -77], rl: [-77, -77] }], ms: 1400 },
+  planchaRodillas: { k: [P_RODILLAS, { ...P_RODILLAS, t: 71 }], ms: 1400 },
   planchaLateral: { k: [{ ...P_ANTEBRAZO, ra: [180, 180] }, { ...P_ANTEBRAZO, t: 78, ll: [-78, -78], rl: [-78, -78], ra: [180, 180] }], ms: 1400 },
+  planchaLateralRodillas: { k: [{ ...P_RODILLAS, ra: [180, 180] }, { ...P_RODILLAS, t: 71, ra: [180, 180] }], ms: 1400 },
   pesoMuerto: { pesa: 'mancuerna', k: [{ la: [2, 0], ra: [-2, 0] }, { t: 74, la: [0, 0], ra: [0, 0], ll: [22, -8], rl: [22, -8] }], ms: 750 },
   rumano: { pesa: 'mancuerna', k: [{ la: [2, 0], ra: [-2, 0] }, { t: 72, la: [0, 0], ra: [0, 0], ll: [10, -3], rl: [10, -3] }], ms: 800 },
+  rumanoUnaPierna: { k: [{ la: [2, 0], ra: [-2, 0] }, { t: 74, la: [0, 0], ra: [0, 0], ll: [8, -2], rl: [-74, -74] }], ms: 900 },
   remo: { pesa: 'mancuerna', k: [{ t: 64, la: [0, 0], ra: [0, 0], ll: [22, -8], rl: [22, -8] }, { t: 64, la: [-62, 4], ra: [-66, 2], ll: [22, -8], rl: [22, -8] }], ms: 600 },
   pressHombro: { pesa: 'mancuerna', k: [{ la: [58, 178], ra: [54, 176] }, { la: [178, 180], ra: [176, 180] }], ms: 650 },
   thruster: { pesa: 'mancuerna', k: [{ t: 34, la: [58, 178], ra: [54, 176], ll: [80, -8], rl: [76, -12] }, { la: [178, 180], ra: [176, 180] }], ms: 600 },
   zancada: { k: [{ la: [2, 0], ra: [-2, 0], ll: [4, 0], rl: [-4, 0] }, { la: [2, 0], ra: [-2, 0], ll: [80, -4], rl: [-8, -88] }], ms: 700 },
+  // zancada atrás: el pie de delante no se mueve y el de atrás da el paso hacia atrás
+  zancadaAtras: { ancla: 'll', anclaX: 18, k: [{ la: [2, 0], ra: [-2, 0], ll: [4, 0], rl: [-4, 0] }, { t: 6, la: [2, 0], ra: [-2, 0], ll: [80, -4], rl: [-8, -88] }], ms: 800 },
+  // búlgara: empeine de atrás sobre el banco, el pie de delante manda
+  bulgara: { ancla: 'll', anclaX: 26, bancoAtras: true, pesa: 'mancuerna', k: [{ t: 8, la: [2, 0], ra: [-2, 0], ll: [30, -4], rl: [-38, -92] }, { t: 14, la: [4, 0], ra: [0, 0], ll: [70, -6], rl: [-28, -132] }], ms: 800 },
   dominada: { apoyo: 'barra', k: [{ la: [176, 180], ra: [174, 180], ll: [2, -88], rl: [-2, -92] }, { la: [130, 210], ra: [126, 212], ll: [4, -88], rl: [0, -92] }], ms: 750 },
   fondos: { apoyo: 'paralelas', k: [{ t: 8, la: [2, 0], ra: [-2, 0], ll: [-8, -60], rl: [-12, -64] }, { t: 20, la: [-58, 6], ra: [-62, 4], ll: [-6, -60], rl: [-10, -64] }], ms: 700 },
-  girosRusos: { pesa: 'mancuerna', k: [{ t: -40, la: [98, 140], ra: [92, 136], ll: [120, 78], rl: [114, 74] }, { t: -34, la: [64, 100], ra: [58, 96], ll: [120, 78], rl: [114, 74] }], ms: 450 },
   marcha: { k: [{ la: [-30, 40], ra: [40, 120], ll: [70, -10], rl: [-4, -4] }, { la: [40, 120], ra: [-30, 40], ll: [-4, -4], rl: [70, -10] }], ms: 480 },
   rodillasAltas: { k: [{ la: [-40, 50], ra: [50, 140], ll: [96, -6], rl: [-6, -10] }, { la: [50, 140], ra: [-40, 50], ll: [-6, -10], rl: [96, -6] }], ms: 260 },
   escalador: { k: [{ ...PLANCHA, ll: [60, -80] }, { ...PLANCHA, rl: [60, -80] }], ms: 260 },
+  // escalador lento con las manos en el asiento de una silla (sin bajar al suelo)
+  escaladorSilla: { silla: true, k: [{ ...SILLA, rl: [34, -46] }, SILLA, { ...SILLA, ll: [34, -46] }, SILLA], ms: 650 },
   patadaFrontal: { k: [G, { ...G, rl: [96, -30], t: -4 }, { ...G, rl: [92, 92], t: -10 }, { ...G, rl: [96, -30], t: -4 }, G], ms: 280 },
   rodillazo: { k: [G, { t: -6, la: [70, 30], ra: [64, 26], ll: [6, 0], rl: [112, -8] }, G], ms: 330 },
-  levPiernas: { k: [{ t: -90, la: [-90, -90], ra: [-90, -90], ll: [92, 92], rl: [94, 94] }, { t: -90, la: [-90, -90], ra: [-90, -90], ll: [178, 178], rl: [176, 176] }], ms: 750 },
-  crunch: { k: [{ t: -90, la: [-150, 40], ra: [-150, 40], ll: [132, 50], rl: [128, 46] }, { t: -52, la: [-110, 70], ra: [-110, 70], ll: [132, 50], rl: [128, 46] }], ms: 600 },
   superman: { k: [{ t: 90, la: [90, 90], ra: [90, 90], ll: [-90, -90], rl: [-90, -90] }, { t: 80, la: [104, 104], ra: [102, 102], ll: [-80, -78], rl: [-80, -78] }], ms: 800 },
   oso: { k: [{ t: 86, la: [10, 0], ra: [-4, 0], ll: [20, -50], rl: [0, -55] }, { t: 86, la: [-4, 0], ra: [10, 0], ll: [0, -55], rl: [20, -50] }], ms: 380 },
   kbSwing: { pesa: 'kettlebell', k: [{ t: 62, la: [-22, -22], ra: [-24, -24], ll: [26, -10], rl: [26, -10] }, { t: -4, la: [92, 92], ra: [90, 90] }], ms: 520 },
   tijeras: { vista: 'frente', k: [{ la: [8, 6], ra: [8, 6], ll: [4, 0], rl: [4, 0] }, { la: [150, 172], ra: [150, 172], ll: [20, 18], rl: [20, 18], alto: 8 }], ms: 330 },
+  // paso lateral: un pie se abre, el otro no despega (sin salto)
+  pasoLateral: { vista: 'frente', k: [{ la: [8, 6], ra: [8, 6], ll: [3, 0], rl: [3, 0] }, { la: [8, 6], ra: [150, 172], ll: [3, 0], rl: [18, 16] }, { la: [8, 6], ra: [8, 6], ll: [3, 0], rl: [3, 0] }, { la: [150, 172], ra: [8, 6], ll: [18, 16], rl: [3, 0] }], ms: 520 },
   elevLateral: { vista: 'frente', pesa: 'mancuerna', k: [{ la: [10, 8], ra: [10, 8] }, { la: [86, 88], ra: [86, 88] }], ms: 700 },
+  aperturas: { vista: 'frente', k: [{ la: [30, 30], ra: [30, 30] }, { la: [86, 90], ra: [86, 90] }], ms: 800 },
   pressPecho: { pesa: 'mancuerna', k: [{ t: -90, la: [178, 180], ra: [176, 180], ll: [132, 50], rl: [128, 46] }, { t: -90, la: [100, 182], ra: [96, 182], ll: [132, 50], rl: [128, 46] }], ms: 650 },
   extTriceps: { pesa: 'mancuerna', k: [{ la: [176, 180], ra: [174, 180] }, { la: [172, 20], ra: [170, 18] }], ms: 650 },
   curl: { pesa: 'mancuerna', k: [{ la: [2, 0], ra: [-2, 0] }, { la: [2, 0], ra: [-2, 160] }, { la: [2, 0], ra: [-2, 0] }, { la: [2, 160], ra: [-2, 0] }], ms: 520 },
   puente: { k: [{ t: -90, la: [-90, -90], ra: [-90, -90], ll: [130, 40], rl: [126, 38] }, { t: -112, la: [-112, -112], ra: [-112, -112], ll: [110, 20], rl: [108, 18] }], ms: 750 },
+  talonesDeslizados: { k: [{ t: -96, la: [-96, -96], ra: [-96, -96], ll: [96, 94], rl: [94, 92] }, { t: -112, la: [-112, -112], ra: [-112, -112], ll: [110, 20], rl: [108, 18] }], ms: 900 },
   hipThrust: { banco: true, pesa: 'barra', k: [{ t: -70, la: [70, 120], ra: [70, 120], ll: [115, 5], rl: [112, 3] }, { t: -95, la: [70, 150], ra: [70, 150], ll: [88, 0], rl: [86, 0] }], ms: 750 },
   patadaGluteo: { k: [{ t: 70, la: [0, 0], ra: [0, 0], ll: [0, -90], rl: [0, -90] }, { t: 70, la: [0, 0], ra: [0, 0], ll: [0, -90], rl: [-112, -172] }], ms: 600 },
   talones: { k: [{ la: [2, 0], ra: [-2, 0] }, { la: [2, 0], ra: [-2, 0], alto: 7 }], ms: 500 },
-  
   sentadillaBarra: { pesa: 'barra', k: [{ la: [-70, 170], ra: [-74, 168] }, { t: 36, la: [-40, 190], ra: [-44, 188], ll: [80, -8], rl: [76, -12] }], ms: 750 },
   pressBanca: { pesa: 'barra', banco: true, k: [{ t: -90, la: [178, 180], ra: [176, 180], ll: [100, 0], rl: [96, 0] }, { t: -90, la: [100, 182], ra: [96, 182], ll: [100, 0], rl: [96, 0] }], ms: 700 },
   pesoMuertoBarra: { pesa: 'barra', k: [{ la: [2, 0], ra: [-2, 0] }, { t: 70, la: [0, 0], ra: [0, 0], ll: [40, -16], rl: [40, -16] }], ms: 800 },
@@ -192,9 +272,11 @@ const MOV = {
   curlBarra: { pesa: 'barra', k: [{ la: [4, 2], ra: [2, 0] }, { la: [4, 160], ra: [2, 158] }], ms: 600 },
   pajaros: { pesa: 'mancuerna', k: [{ t: 70, la: [4, 4], ra: [-4, -4], ll: [16, -6], rl: [16, -6] }, { t: 70, la: [-80, -80], ra: [-84, -84], ll: [16, -6], rl: [16, -6] }], ms: 650 },
   granjero: { pesa: 'mancuerna', k: [{ la: [0, 0], ra: [0, 0], ll: [18, -6], rl: [-16, -4] }, { la: [0, 0], ra: [0, 0], ll: [-16, -4], rl: [18, -6] }], ms: 420 },
-  pallof: { k: [{ la: [20, 150], ra: [16, 148], ll: [12, -6], rl: [-6, -6] }, { la: [88, 90], ra: [86, 88], ll: [12, -6], rl: [-6, -6] }], ms: 800 },
+  // Pallof: banda sujeta a un poste; las manos salen del pecho al frente y el torso no gira
+  pallof: { banda: true, k: [{ la: [20, 150], ra: [16, 148], ll: [12, -6], rl: [-6, -6] }, { la: [88, 90], ra: [86, 88], ll: [12, -6], rl: [-6, -6] }, { la: [88, 90], ra: [86, 88], ll: [12, -6], rl: [-6, -6] }], ms: 800 },
   goblet: { pesa: 'kettlebell', k: [{ la: [30, 160], ra: [26, 158] }, { t: 30, la: [40, 168], ra: [36, 166], ll: [82, -10], rl: [78, -14] }], ms: 700 },
-  cuello: { k: [{ la: [120, 250], ra: [116, 248] }, { t: -5, la: [124, 252], ra: [120, 250] }], ms: 1100 },
+  // cuello: la mano queda en la frente y la cabeza no se mueve
+  cuello: { k: [{ la: [4, 2], ra: [95, 236] }, { t: -2, la: [4, 2], ra: [95, 236] }], ms: 1100 },
   deadBug: { k: [{ t: -90, la: [180, 180], ra: [180, 180], ll: [180, 90], rl: [178, 88] }, { t: -90, la: [-100, -100], ra: [180, 180], ll: [180, 90], rl: [96, 96] }, { t: -90, la: [180, 180], ra: [180, 180], ll: [180, 90], rl: [178, 88] }, { t: -90, la: [180, 180], ra: [-100, -100], ll: [96, 96], rl: [178, 88] }], ms: 700 },
   birdDog: { k: [{ t: 70, la: [0, 0], ra: [0, 0], ll: [0, -90], rl: [0, -90] }, { t: 70, la: [0, 0], ra: [94, 94], ll: [-94, -94], rl: [0, -90] }, { t: 70, la: [0, 0], ra: [0, 0], ll: [0, -90], rl: [0, -90] }, { t: 70, la: [94, 94], ra: [0, 0], ll: [0, -90], rl: [-94, -94] }], ms: 700 },
   movilidad: { k: [{ la: [90, 90], ra: [-60, -40] }, { la: [180, 180], ra: [180, 180] }, { la: [-60, -40], ra: [90, 90] }], ms: 700 },
@@ -214,13 +296,19 @@ function dibujar(cv, mov, tms) {
   if (mov.apoyo === 'barra') oy = 22 - Math.min(pt.la[2][1], pt.ra[2][1]);
   else if (mov.apoyo === 'paralelas') oy = 92 - Math.max(pt.la[2][1], pt.ra[2][1]);
   else oy = SUELO - Math.max(...todos.map((q) => q[1])) - p.alto;
-  const xs = todos.map((q) => q[0]), ox = W / 2 - (Math.min(...xs) + Math.max(...xs)) / 2;
+  let ox;
+  if (mov.ancla) ox = W / 2 + (mov.anclaX || 0) - pt[mov.ancla][2][0];
+  else { const xs = todos.map((q) => q[0]); ox = W / 2 - (Math.min(...xs) + Math.max(...xs)) / 2; }
   const T = (q) => [q[0] + ox, q[1] + oy];
-  ctx.strokeStyle = css('--floor'); ctx.lineWidth = 3; ctx.lineCap = 'round';
+  const suelo = css('--floor');
+  ctx.strokeStyle = suelo; ctx.lineWidth = 3; ctx.lineCap = 'round';
   ctx.beginPath(); ctx.moveTo(14, SUELO + 4); ctx.lineTo(W - 14, SUELO + 4); ctx.stroke();
   if (mov.apoyo === 'barra') { ctx.beginPath(); ctx.moveTo(30, 22); ctx.lineTo(W - 30, 22); ctx.stroke(); }
   if (mov.apoyo === 'paralelas') { ctx.beginPath(); ctx.moveTo(40, 94); ctx.lineTo(W - 40, 94); ctx.stroke(); ctx.beginPath(); ctx.moveTo(50, 94); ctx.lineTo(50, SUELO + 4); ctx.moveTo(W - 50, 94); ctx.lineTo(W - 50, SUELO + 4); ctx.stroke(); }
-  if (mov.banco) { const s = T(pt.S); ctx.fillStyle = css('--floor'); ctx.fillRect(s[0] - 26, s[1] + 6, 40, SUELO + 4 - s[1] - 6); }
+  ctx.fillStyle = suelo;
+  if (mov.banco) { const s = T(pt.S); ctx.fillRect(s[0] - 26, s[1] + 6, 40, SUELO + 4 - s[1] - 6); }
+  if (mov.silla) { const m = T(pt.ra[2]); ctx.fillRect(m[0] - 18, m[1] + 4, 34, SUELO + 4 - m[1] - 4); }
+  if (mov.bancoAtras) { const q = T(pt.rl[2]); ctx.fillRect(q[0] - 22, q[1] + 4, 32, SUELO + 4 - q[1] - 4); }
   const linea = (seg, col, w) => { ctx.strokeStyle = col; ctx.lineWidth = w; ctx.beginPath(); const a = T(seg[0]); ctx.moveTo(a[0], a[1]); for (const q of seg.slice(1)) { const b = T(q); ctx.lineTo(b[0], b[1]); } ctx.stroke(); };
   const lejos = css('--figure-far'), cerca = css('--figure'), oro = css('--gold');
   const objeto = (mano) => { const m = T(mano); ctx.fillStyle = oro;
@@ -229,6 +317,8 @@ function dibujar(cv, mov, tms) {
     else if (mov.pesa === 'barra') { ctx.beginPath(); ctx.arc(m[0], m[1], 11, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = css('--surface-2'); ctx.beginPath(); ctx.arc(m[0], m[1], 3, 0, Math.PI * 2); ctx.fill(); } };
   if (mov.cuerda) { const a = T(pt.la[2]), b = T(pt.ra[2]), sube = Math.sin(cic * Math.PI); ctx.strokeStyle = oro; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(a[0], a[1]);
     ctx.quadraticCurveTo((a[0] + b[0]) / 2 + 30 * (sube - 0.5), sube > 0.5 ? SUELO + 6 : a[1] - 70, b[0], b[1]); ctx.stroke(); }
+  if (mov.banda) { const m = T(pt.ra[2]); ctx.strokeStyle = suelo; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(16, 40); ctx.lineTo(16, SUELO + 4); ctx.stroke();
+    ctx.strokeStyle = oro; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(18, m[1]); ctx.lineTo(m[0], m[1]); ctx.stroke(); }
   linea(pt.ll, lejos, 7); linea(pt.la, lejos, 6);
   linea([pt.H, pt.S], cerca, 8);
   linea(pt.rl, cerca, 7);
@@ -237,264 +327,550 @@ function dibujar(cv, mov, tms) {
   if (mov.pesa) { objeto(pt.la[2]); objeto(pt.ra[2]); }
 }
 
+// ---------------- láminas de técnica (carpeta img/) ----------------
+const LAM = {
+  goblet: { src: 'img/sentadilla-goblet.webp', alt: 'Fondo de la sentadilla goblet: pesa pegada al pecho, muslos en paralelo, pecho alto y talones en el suelo.', nota: 'Pesa pegada al pecho, muslos en paralelo, pecho alto y talones en el suelo.' },
+  rumano: { src: 'img/peso-muerto-rumano.webp', alt: 'Peso muerto rumano visto de lado: cadera atrás, rodillas blandas, espalda larga y mancuernas cerca de las piernas.', nota: 'Cadera atrás y rodillas blandas. Baja solo mientras la espalda siga larga: si la lumbar se redondea antes, esa es tu profundidad.' },
+  remo: { src: 'img/remo-mancuerna.webp', alt: 'Remo con mancuerna: una mano apoyada en un cajón, los dos pies en el suelo y el codo hacia la cadera.', nota: 'Una mano apoyada y los dos pies en el suelo: es más estable que arrodillarse en el banco. Codo hacia la cadera y espalda larga.' },
+  militar: { src: 'img/press-militar.webp', alt: 'Final del press militar con barra: brazos extendidos sobre la cabeza, costillas quietas y pies a la anchura de la cadera.', nota: 'Esto es el final. Empieza con la barra delante de los hombros y los antebrazos verticales, y empuja hasta aquí sin arquear la espalda.' },
+  guardia: { src: 'img/guardia-boxeo.webp', alt: 'Guardia de boxeo: manos en las mejillas, codos cerca de las costillas, un pie delante y rodillas blandas.', nota: 'Manos en las mejillas, codos cerca de las costillas, un pie delante, rodillas blandas y mentón recogido. Vuelve aquí después de cada golpe.' },
+  plancha: { src: 'img/plancha.webp', alt: 'Plancha de antebrazos: el cuerpo forma una línea de la cabeza a los talones.', nota: 'Cuerpo en una línea de la cabeza a los talones; abdomen y glúteos firmes, sin aguantar la respiración.' },
+};
+
+// ---------------- estiramientos (un gesto por zona, sin rebotes) ----------------
+const ESTIR = {
+  psoas: 'Psoas: una rodilla en el suelo, lleva la cadera de ese lado hacia delante con el tronco alto · 45 s por lado',
+  cuad: 'Cuádriceps: de pie, talón al glúteo y rodillas juntas · 45 s por lado',
+  isquio: 'Isquiotibiales: sentado, una pierna larga y el pecho hacia el muslo · 45 s por lado',
+  pecho: 'Pecho: antebrazo en el marco de una puerta y gira el cuerpo hacia el otro lado · 45 s por lado',
+  gemelo: 'Gemelo: medio pie en un escalón, rodilla estirada y talón hacia abajo · 45 s por lado',
+  gluteo: 'Glúteo: boca arriba, tobillo sobre la rodilla contraria y acerca las piernas al pecho · 45 s por lado',
+  espalda: 'Espalda: de rodillas, siéntate sobre los talones y estira los brazos al frente · 45 s',
+  hombro: 'Hombro: cruza un brazo por delante del pecho y sujétalo con el otro · 45 s por lado',
+  toracica: 'Espalda alta: en cuatro apoyos, una mano en la nuca y abre el codo hacia el techo · 6 por lado',
+  resp: 'Respiración lenta: inhala 4 s y exhala 6 s · 1 min',
+};
+
 // ---------------- rutinas ----------------
-// e(nombre, movimiento, series, dosis, descanso s, técnica, trabajo s si la dosis es por tiempo)
-const e = (n, m, s, d, r, tec, trabajo = 0) => ({ n, m, s, d, r, tec, trabajo });
+// e(nombre, movimiento, series, dosis, descanso s, técnica, opciones)
+// opciones: t = trabajo en s si la dosis es por tiempo · lados = tramos que encadena el reloj · carga = lleva peso (historial)
+//           imp = salto o impacto (fuera en la semana suave) · aprox = series de aproximación · lam = lámina · ln = nota propia de la lámina · u = unidad
+const LADOS = ['lado izquierdo', 'lado derecho'];
+const CUELLO = ['frente', 'nuca', 'lado izquierdo', 'lado derecho'];
+const AP = 'Aproximación (no cuenta): barra vacía × 8 · mitad de tu carga × 5 · y entonces las series de trabajo.';
+const e = (n, m, s, d, r, tec, o = {}) => ({ n, m, s, d, r, tec, trabajo: o.t || 0, lados: o.lados || null, carga: !!o.carga, impacto: !!o.imp, aprox: o.aprox || '', lam: o.lam || '', ln: o.ln || '', u: o.u || 'reps' });
 const PROGRAMAS = {
   jay: { nombre: 'Jay', sub: 'Peleador avanzado · pesas + boxeo', dias: [
-    { foco: 'Potencia y boxeo', min: 60, cal: ['Cuerda 5 min a ritmo suave', 'Movilidad de cadera (psoas) y hombros 3 min', 'Sombra ligera 2 min'], ej: [
-      e('Sombra técnica', 'sombra', 3, '3 min', 60, 'Guardia arriba y mentón abajo. Jab y cross rápidos; vuelve siempre a la guardia y muévete entre golpes.', 180),
-      e('Sentadilla con barra', 'sentadillaBarra', 5, '5 reps', 150, 'Al 75–80 % de tu máximo. Baja a paralelo con el pecho arriba y sube explosivo.'),
-      e('Sentadilla con salto', 'saltoSentadilla', 4, '6 reps', 90, 'Justo después de la barra (contraste): salto máximo y aterrizaje suave.'),
-      e('Press de banca con barra', 'pressBanca', 4, '6 reps', 120, 'Escápulas juntas, baja la barra al pecho controlado y empuja explosivo.'),
-      e('Flexiones con palmada', 'flexionPalmada', 4, '8 reps', 75, 'Cuerpo en línea; despega las manos con fuerza. Si pierdes la forma, sin palmada.'),
-      e('Combo jab · cross · gancho', 'combo', 6, '1 min', 60, 'Golpes con intención, no solo cardio: rota la cadera en el cross y el gancho.', 60),
-      e('Cuello isométrico', 'cuello', 3, '20 s por dirección', 30, 'Mano en la frente, la nuca y cada lado; empuja suave sin mover la cabeza. Protege contra los golpes.', 20),
-    ], frio: ['Pecho y hombros 2 min', 'Psoas y cuádriceps 2 min por lado', 'Respiración lenta 1 min'] },
-    { foco: 'Fuerza con barra', min: 65, cal: ['Saltos de tijera 2 min', 'Peso muerto con la barra sola 2×8', 'Movilidad de cadera 3 min'], ej: [
-      e('Peso muerto con barra', 'pesoMuertoBarra', 5, '5 reps', 150, 'Barra pegada a las piernas y espalda neutra; empuja el suelo y lleva la cadera adelante.'),
-      e('Remo con barra', 'remoBarra', 4, '8 reps', 90, 'Torso a 45°, lleva la barra al ombligo y aprieta la espalda arriba.'),
-      e('Press militar con barra', 'pressBarra', 4, '6 reps', 120, 'De pie, abdomen y glúteos firmes; sube la barra recta sobre la cabeza.'),
-      e('Zancadas con mancuernas', 'zancada', 4, '10 por pierna', 75, 'Paso largo; rodilla de atrás casi al suelo y la de adelante sobre el tobillo.'),
-      e('Dominadas (con lastre si puedes)', 'dominada', 4, '6–8 reps', 120, 'Desde brazos estirados hasta pasar el mentón, sin balancearte.'),
-      e('Paseo del granjero', 'granjero', 4, '40 m', 60, 'Mancuernas o kettlebells pesadas; camina erguido con pasos cortos. Agarre y core de peleador.'),
-      e('Giros rusos con disco', 'girosRusos', 3, '20 toques', 45, 'Pecho alto y lento: gira desde el pecho, no desde la cintura.'),
-    ], frio: ['Espalda y dorsales 2 min', 'Isquiotibiales 2 min', 'Respiración 1 min'] },
-    { foco: 'Cardio de pelea', min: 55, cal: ['Trote suave en el sitio 3 min', 'Movilidad de tobillos, rodillas y psoas 3 min'], ej: [
-      e('Cuerda por asaltos', 'cuerda', 5, '3 min', 60, 'Saltos bajos y rápidos sobre la punta de los pies; gira con las muñecas.', 180),
-      e('Swing con kettlebell', 'kbSwing', 4, '20 reps', 45, 'La fuerza sale de la cadera: bisagra atrás y golpe de cadera; los brazos solo guían.'),
-      e('Rodillas altas', 'rodillasAltas', 6, '30 s', 30, 'Rodillas a la cadera, brazos activos, máxima velocidad.', 30),
-      e('Escaladores', 'escalador', 6, '30 s', 30, 'Plancha firme; rodillas al pecho alternando sin subir la cadera.', 30),
-      e('Sprawls', 'sprawl', 6, '30 s', 30, 'Desde la guardia, lanza las piernas atrás y la cadera al suelo; vuelve rápido.', 30),
-      e('Patada frontal', 'patadaFrontal', 4, '12 por pierna', 45, 'Sube la rodilla, extiende y empuja con la planta; vuelve a la guardia.'),
-      e('Rodillazos', 'rodillazo', 4, '15 por pierna', 45, 'Sujeta una nuca imaginaria y clava la rodilla hacia arriba con la cadera.'),
-    ], frio: ['Gemelos y tobillos 2 min', 'Psoas 2 min por lado', 'Cadera y glúteos 2 min'] },
-    { foco: 'Core, resistencia y empuje', min: 55, cal: ['Cuerda 3 min', 'Gato-camello y movilidad de columna 2 min'], ej: [
-      e('Fondos con lastre', 'fondos', 4, '8–10 reps', 90, 'Baja hasta 90° en los codos con el pecho un poco adelante; añade peso con cinturón o mochila.'),
-      e('Press Pallof', 'pallof', 3, '12 por lado', 40, 'Con banda o polea a la altura del pecho: empuja al frente sin dejar que el torso gire.'),
-      e('Elevación de piernas', 'levPiernas', 4, '15 reps', 45, 'Espalda baja pegada al suelo; sube las piernas rectas y bájalas lento.'),
-      e('Plancha lateral', 'planchaLateral', 3, '45 s por lado', 30, 'Codo bajo el hombro, cadera alta y cuerpo en línea.', 45),
-      e('Superman', 'superman', 4, '12 reps', 40, 'Extiende brazos y piernas largos más que subirlos; sostén un segundo sin tirones.'),
-      e('Caminata de oso', 'oso', 4, '40 s', 40, 'Rodillas a un palmo del suelo y espalda plana; mano y pie contrarios a la vez.', 40),
-      e('Cuello isométrico', 'cuello', 3, '20 s por dirección', 30, 'Frente, nuca y lados, sin mover la cabeza.', 20),
-    ], frio: ['Abdomen y espalda baja 2 min', 'Pecho y tríceps 2 min'] },
-    { foco: 'Circuito de combate', min: 55, cal: ['Saltos de tijera 2 min', 'Sombra ligera 3 min'], ej: [
-      e('Thrusters con barra', 'thrusterBarra', 5, '8 reps', 90, 'Sentadilla profunda con la barra en los hombros y, al subir, empújala arriba en un solo movimiento.'),
-      e('Burpees', 'burpee', 5, '12 reps', 60, 'Ritmo constante: pecho al suelo y salto completo.'),
-      e('Remo con mancuerna', 'remo', 4, '10 por brazo', 60, 'Espalda plana; el codo va hacia la cadera.'),
-      e('Uppercuts', 'uppercut', 6, '30 s', 30, 'Flexiona un poco las rodillas y sube el golpe con la pierna y la cadera.', 30),
-      e('Saltos de tijera', 'tijeras', 4, '40 s', 30, 'Abre piernas y brazos a la vez y aterriza suave.', 40),
-      e('Sombra final', 'sombra', 3, '3 min', 60, 'Combina todo lo de la semana con buena técnica aunque estés cansado.', 180),
-    ], frio: ['Estiramiento completo 4 min', 'Respiración 1 min'] },
+    { foco: 'Pierna y técnica fresca', min: 58, cal: ['Cuerda suave 3 min', 'Movilidad de cadera (psoas) y tobillos 3 min', 'Sentadilla con la barra vacía 2×8'], ej: [
+      e('Sombra técnica: paso y jab', 'sombra', 3, '3 min', 60, 'Tema del día: paso y jab, y vuelve a la guardia. Manos en las mejillas y mentón abajo; da un paso después de cada golpe. Va primero, con las piernas frescas.', { t: 180, lam: 'guardia' }),
+      e('Sentadilla con barra', 'sentadillaBarra', 4, '5 reps', 180, 'Deja 2–3 repeticiones en reserva. Baja a paralelo con el pecho arriba y sube rápido. Soportes de seguridad siempre. Contraste: tras cada serie, 1 min de pausa y una serie de saltos.', { carga: 1, aprox: AP }),
+      e('Sentadilla con salto', 'saltoSentadilla', 3, '4 reps', 120, 'Se alterna con la sentadilla. Aterrizaje silencioso y rodilla sobre el pie; si el salto suena o sale lento, se acaba el ejercicio.', { imp: 1 }),
+      e('Remo con barra', 'remoBarra', 4, '8 reps', 90, 'Deja 1–2 en reserva. Torso a 45°, barra al ombligo y aprieta la espalda arriba sin tirar con la lumbar.', { carga: 1 }),
+      e('Cuello isométrico', 'cuello', 2, '20 s por dirección', 30, 'Mano en la frente, la nuca y cada lado: empuja poco y la cabeza no se mueve. El reloj encadena las 4 direcciones. Para si hay mareo, dolor agudo u hormigueo.', { t: 20, lados: CUELLO }),
+    ], frio: ['psoas', 'cuad', 'gemelo', 'resp'] },
+    { foco: 'Empuje, tracción y combinaciones', min: 58, cal: ['Cuerda suave 3 min', 'Círculos de brazos y rotaciones con banda 2 min', 'Press de banca con la barra vacía 2×8'], ej: [
+      e('Combo jab · cross · gancho', 'combo', 4, '2 min', 60, 'Mete la cadera en el cross y las manos vuelven enseguida a las mejillas. Da un paso después de cada combo.', { t: 120, lam: 'guardia' }),
+      e('Press de banca con barra', 'pressBanca', 4, '6 reps', 150, 'Deja 2 en reserva. Escápulas juntas, baja al pecho controlado y empuja. Con soportes de seguridad o un compañero. Extra opcional: 3×5 flexiones con palmada, solo si la banca salió fácil y las muñecas están bien.', { carga: 1, aprox: AP }),
+      e('Dominadas', 'dominada', 4, '6–8 reps', 120, 'Desde brazos estirados hasta pasar el mentón, sin balanceo. Lastre solo si las 4 series salen con 1–2 en reserva.', { carga: 1 }),
+      e('Press militar con barra', 'pressBarra', 3, '6 reps', 120, 'Deja 2 en reserva. Barra delante de los hombros y antebrazos verticales; empuja recto sobre la cabeza con las costillas quietas.', { carga: 1, lam: 'militar' }),
+      e('Pájaros (deltoide posterior)', 'pajaros', 3, '15 reps', 60, 'Peso ligero que no mueva el torso; abre los brazos a los lados. Equilibra el hombro que golpea.', { carga: 1 }),
+      e('Paseo del granjero', 'granjero', 3, '40 m', 60, 'Pesado y erguido, pasos cortos. Agarre y core de peleador.', { carga: 1, u: 'm' }),
+      e('Press Pallof', 'pallof', 3, '8 por lado', 40, 'Banda a la altura del pecho: empuja al frente y aguanta 2 s sin que el torso gire. La serie son los dos lados.'),
+    ], frio: ['pecho', 'hombro', 'espalda', 'resp'] },
+    { foco: 'Asaltos', min: 45, asaltos: true, cal: ['Trote suave en el sitio 3 min', 'Movilidad de tobillos, rodillas y psoas 3 min'], ej: [
+      e('Swing con kettlebell', 'kbSwing', 3, '10 reps', 60, 'Antes de los asaltos, con la cadera fresca y una campana moderada. Bisagra atrás y golpe de cadera; los brazos solo guían.', { carga: 1 }),
+      e('Asalto 1 · Cuerda', 'cuerda', 1, '3 min', 60, 'Saltos bajos sobre la punta de los pies; gira con las muñecas.', { t: 180 }),
+      e('Asalto 2 · Sombra de esquiva', 'sombra', 1, '3 min', 60, 'Tema del día: esquiva y paso, con poco golpeo. Manos en las mejillas.', { t: 180, lam: 'guardia' }),
+      e('Asalto 3 · Sprawl y rodillazo', 'sprawl', 1, '3 min', 60, 'Desde la guardia, piernas atrás y cadera al suelo; al volver, un rodillazo. Ritmo que puedas sostener los 3 minutos.', { t: 180 }),
+      e('Asalto 4 · Patada frontal', 'patadaFrontal', 1, '3 min', 60, 'Unas 8 por pierna dentro del asalto, menos si la técnica se cae. Sube la rodilla, empuja con la planta y vuelve a la guardia.', { t: 180 }),
+      e('Asalto 5 · Cuerda o sombra', 'cuerda', 1, '3 min', 60, 'Elige: cuerda suave o sombra con pasos.', { t: 180 }),
+      e('Asalto 6 · Sombra suave', 'sombra', 1, '3 min', 60, 'Manos altas y respiración larga; termina con buena técnica.', { t: 180, lam: 'guardia' }),
+    ], frio: ['gemelo', 'psoas', 'gluteo', 'resp'] },
+    { foco: 'Bisagra y core', min: 52, cal: ['Cuerda suave 3 min', 'Gato-camello y movilidad de cadera 3 min'], ej: [
+      e('Peso muerto con barra', 'pesoMuertoBarra', 4, '4 reps', 180, 'Deja 2–3 en reserva. Barra pegada a las piernas y espalda neutra; empuja el suelo y lleva la cadera adelante. Si la espalda se redondea, baja la carga.', { carga: 1, aprox: AP }),
+      e('Peso muerto rumano con mancuernas', 'rumano', 3, '8 reps', 90, 'Más ligero que el peso muerto. Cadera atrás y rodillas blandas; baja solo mientras la espalda siga larga.', { carga: 1, lam: 'rumano' }),
+      e('Remo con mancuerna', 'remo', 3, '10 por brazo', 60, 'Una mano en un banco o cajón y los dos pies en el suelo. Codo hacia la cadera y espalda larga. La serie son los dos brazos.', { carga: 1, lam: 'remo' }),
+      e('Dead bug', 'deadBug', 3, '8 por lado', 30, 'Boca arriba, espalda baja pegada al suelo; estira brazo y pierna contrarios mientras exhalas.'),
+      e('Plancha lateral', 'planchaLateral', 3, '35 s por lado', 30, 'Codo bajo el hombro, cadera alta y cuerpo en línea. El reloj cuenta un lado, una pausa corta y el otro.', { t: 35, lados: LADOS }),
+      e('Caminata de oso', 'oso', 3, '30 s', 40, 'Rodillas a un palmo del suelo y espalda plana; mano y pie contrarios a la vez.', { t: 30 }),
+      e('Cuello isométrico', 'cuello', 2, '15 s por dirección', 30, 'Corto: frente, nuca y lados, sin mover la cabeza. El reloj encadena las 4 direcciones.', { t: 15, lados: CUELLO }),
+    ], frio: ['isquio', 'espalda', 'gluteo', 'resp'] },
+    { foco: 'Potencia corta', min: 40, cal: ['Cuerda suave 3 min', 'Movilidad general 2 min', 'Thruster con la barra vacía 2×6'], ej: [
+      e('Thrusters con barra', 'thrusterBarra', 4, '6 reps', 120, 'Deja 2 en reserva. Sentadilla con la barra en los hombros y, al subir, empújala arriba en un solo movimiento.', { carga: 1 }),
+      e('Burpees', 'burpee', 3, '8 reps', 60, 'Ritmo constante, no carrera. Pecho al suelo solo si la lumbar no se hunde; si se hunde, baja sin tocar con el pecho.', { imp: 1 }),
+      e('Uppercuts', 'uppercut', 4, '20 s', 40, 'Pocos y buenos: flexiona un poco las rodillas y sube el golpe con la pierna y la cadera.', { t: 20 }),
+      e('Sombra: junta la semana', 'sombra', 2, '3 min', 60, 'Paso, jab, esquiva y manos en las mejillas aunque estés cansado.', { t: 180, lam: 'guardia' }),
+    ], frio: ['pecho', 'psoas', 'cuad', 'resp'] },
   ] },
-  hombre: { nombre: 'Hombre', sub: 'Pesas · rutina completa', dias: [
-    { foco: 'Pecho y tríceps', min: 60, cal: ['Saltos de tijera 3 min', 'Press de banca con la barra sola 2×10', 'Movilidad de hombros 2 min'], ej: [
-      e('Press de banca con barra', 'pressBanca', 4, '8 reps', 120, 'Escápulas juntas, pies firmes; baja al pecho controlado y empuja arriba.'),
-      e('Press inclinado con mancuernas', 'pressPecho', 3, '10 reps', 90, 'Banco a 30°; baja hasta estirar el pecho y sube juntando las mancuernas.'),
-      e('Fondos en paralelas', 'fondos', 3, '10 reps', 90, 'Baja hasta 90° y sube con fuerza; inclínate un poco para más pecho.'),
-      e('Extensión de tríceps con mancuerna', 'extTriceps', 3, '12 reps', 60, 'Codos apuntando al techo y quietos; solo se mueve el antebrazo.'),
-      e('Flexiones', 'flexion', 2, 'al máximo', 60, 'Para terminar: cuerpo recto y pecho cerca del suelo.'),
-      e('Plancha', 'plancha', 3, '45 s', 45, 'Cuerpo en línea, abdomen y glúteos firmes.', 45),
-    ], frio: ['Pecho y hombros 2 min', 'Tríceps 1 min'] },
+  hombre: { nombre: 'Hombre', sub: 'Fuerza general · avanzado', dias: [
+    { foco: 'Pecho y tríceps', min: 55, cal: ['Remo o bici suave 3 min', 'Movilidad de hombros con banda 2 min'], ej: [
+      e('Press de banca con barra', 'pressBanca', 4, '6–8 reps', 150, 'Deja 1–2 en reserva. Escápulas juntas, pies firmes; baja al pecho controlado y empuja. Con soportes de seguridad o un compañero.', { carga: 1, aprox: AP }),
+      e('Press inclinado con mancuernas', 'pressPecho', 3, '8–10 reps', 90, 'Banco a 30°; baja hasta estirar el pecho y sube juntando las mancuernas.', { carga: 1 }),
+      e('Fondos en paralelas', 'fondos', 3, '8–10 reps', 90, 'Baja hasta 90° en los codos y sube con fuerza; inclínate un poco para más pecho.', { carga: 1 }),
+      e('Extensión de tríceps con mancuerna', 'extTriceps', 3, '10–12 reps', 60, 'Codos apuntando al techo y quietos; solo se mueve el antebrazo.', { carga: 1 }),
+      e('Pájaros o face pull', 'pajaros', 3, '15 reps', 60, 'Peso que no mueva el torso. Equilibra todo el empuje del día y cuida el hombro.', { carga: 1 }),
+      e('Plancha', 'plancha', 3, '45 s', 45, 'Cuerpo en línea, abdomen y glúteos firmes.', { t: 45, lam: 'plancha' }),
+    ], frio: ['pecho', 'hombro', 'resp'] },
     { foco: 'Espalda y bíceps', min: 60, cal: ['Remo o trote 3 min', 'Remo con barra ligera 2×12'], ej: [
-      e('Dominadas', 'dominada', 4, '8 reps', 120, 'Desde brazos estirados; si no llegas, usa banda o salto con bajada lenta.'),
-      e('Remo con barra', 'remoBarra', 4, '8 reps', 90, 'Torso a 45°, barra al ombligo, aprieta la espalda arriba.'),
-      e('Peso muerto con barra', 'pesoMuertoBarra', 4, '6 reps', 150, 'Bisagra de cadera con la espalda neutra; sube apretando glúteos.'),
-      e('Pájaros (deltoide posterior)', 'pajaros', 3, '15 reps', 60, 'Inclinado, abre los brazos hacia los lados con peso ligero; cuida la salud del hombro.'),
-      e('Curl con barra', 'curlBarra', 3, '10 reps', 60, 'Codos pegados al cuerpo, sube sin balancear y baja lento.'),
-      e('Curl martillo', 'curl', 3, '12 reps', 60, 'Mancuernas con agarre neutro, alternando brazos.'),
-    ], frio: ['Dorsales 2 min', 'Bíceps y antebrazos 1 min'] },
-    { foco: 'Piernas', min: 65, cal: ['Bici o trote 4 min', 'Sentadilla con la barra sola 2×10', 'Movilidad de cadera 2 min'], ej: [
-      e('Sentadilla con barra', 'sentadillaBarra', 5, '8 reps', 150, 'Pies al ancho de hombros; baja a paralelo con el pecho arriba y las rodillas hacia afuera.'),
-      e('Sentadilla búlgara', 'zancada', 3, '10 por pierna', 90, 'Pie de atrás sobre un banco y mancuernas en las manos; corrige diferencias entre piernas.'),
-      e('Peso muerto rumano con barra', 'rumanoBarra', 4, '10 reps', 90, 'Rodillas casi rectas; lleva la cadera atrás hasta sentir los isquiotibiales.'),
-      e('Hip thrust con barra', 'hipThrust', 3, '12 reps', 90, 'Espalda alta en el banco; sube hasta alinear rodillas, cadera y hombros.'),
-      e('Elevación de talones con mancuernas', 'talones', 4, '15 reps', 45, 'Pausa arriba y baja lento.'),
-    ], frio: ['Cuádriceps e isquiotibiales 3 min', 'Gemelos 1 min'] },
-    { foco: 'Hombros y core', min: 55, cal: ['Saltos de tijera 3 min', 'Círculos de brazos y rotaciones con banda 2 min'], ej: [
-      e('Press militar con barra', 'pressBarra', 4, '8 reps', 120, 'De pie y firme; la barra sube recta sobre la cabeza.'),
-      e('Elevaciones laterales', 'elevLateral', 3, '15 reps', 60, 'Codos un poco flexionados, hasta la altura de los hombros, sin impulso.'),
-      e('Pájaros (deltoide posterior)', 'pajaros', 3, '15 reps', 60, 'Peso ligero y control.'),
-      e('Paseo del granjero', 'granjero', 3, '40 m', 60, 'Pesado y erguido; trapecios y agarre.'),
-      e('Elevación de piernas', 'levPiernas', 3, '15 reps', 45, 'Espalda baja pegada al suelo, baja lento.'),
-      e('Plancha lateral', 'planchaLateral', 3, '30 s por lado', 30, 'Cadera alta y cuerpo recto.', 30),
-    ], frio: ['Hombros 2 min', 'Abdomen y espalda baja 2 min'] },
-    { foco: 'Cuerpo completo y acondicionamiento', min: 55, cal: ['Trote suave 3 min', 'Movilidad general 2 min'], ej: [
-      e('Thrusters con mancuernas', 'thruster', 4, '10 reps', 75, 'Sentadilla y press en un solo movimiento.'),
-      e('Swing con kettlebell', 'kbSwing', 4, '15 reps', 60, 'Potencia de cadera, espalda neutra.'),
-      e('Zancadas caminando con mancuernas', 'zancada', 3, '12 por pierna', 75, 'Pasos largos y torso erguido.'),
-      e('Burpees', 'burpee', 4, '12 reps', 60, 'Pecho al suelo y salto completo.'),
-      e('Escaladores', 'escalador', 4, '30 s', 30, 'Rodillas al pecho rápido, cadera estable.', 30),
-    ], frio: ['Estiramiento completo 4 min'] },
+      e('Dominadas', 'dominada', 4, '6–8 reps', 120, 'Desde brazos estirados; si no salen limpias, usa banda o salta y baja lento.', { carga: 1 }),
+      e('Remo con barra', 'remoBarra', 4, '8 reps', 90, 'Torso a 45°, barra al ombligo, aprieta la espalda arriba.', { carga: 1 }),
+      e('Peso muerto con barra', 'pesoMuertoBarra', 4, '6 reps', 180, 'Deja 2 en reserva. Bisagra de cadera con la espalda neutra; sube apretando glúteos.', { carga: 1, aprox: AP }),
+      e('Pájaros (deltoide posterior)', 'pajaros', 3, '15 reps', 60, 'Inclinado, abre los brazos a los lados con peso ligero.', { carga: 1 }),
+      e('Curl con barra', 'curlBarra', 3, '10 reps', 60, 'Codos pegados al cuerpo, sube sin balancear y baja lento.', { carga: 1 }),
+      e('Curl martillo', 'curl', 3, '12 reps', 60, 'Mancuernas con agarre neutro, alternando brazos.', { carga: 1 }),
+    ], frio: ['espalda', 'isquio', 'hombro'] },
+    { foco: 'Piernas', min: 60, cal: ['Bici o trote 4 min', 'Movilidad de cadera y tobillos 3 min'], ej: [
+      e('Sentadilla con barra', 'sentadillaBarra', 4, '6–8 reps', 180, 'Deja 2 en reserva. Pies al ancho de hombros; baja a paralelo con el pecho arriba y las rodillas hacia afuera.', { carga: 1, aprox: AP }),
+      e('Sentadilla búlgara', 'bulgara', 3, '8 por pierna', 90, 'El empeine de atrás va sobre el banco; el torso se inclina poco; el talón de delante manda. La serie son las dos piernas.', { carga: 1 }),
+      e('Peso muerto rumano con barra', 'rumanoBarra', 3, '8 reps', 90, 'Rodillas casi rectas; lleva la cadera atrás hasta sentir los isquiotibiales, con la espalda larga.', { carga: 1, lam: 'rumano' }),
+      e('Hip thrust con barra', 'hipThrust', 3, '8–10 reps', 90, 'Espalda alta en el banco; sube hasta alinear rodillas, cadera y hombros.', { carga: 1 }),
+      e('Elevación de talones con mancuernas', 'talones', 3, '12 reps', 45, 'Pausa arriba y baja lento.', { carga: 1 }),
+    ], frio: ['cuad', 'isquio', 'psoas', 'gemelo'] },
+    { foco: 'Hombros y core', min: 55, cal: ['Remo o bici suave 3 min', 'Círculos de brazos y rotaciones con banda 2 min'], ej: [
+      e('Press militar con barra', 'pressBarra', 4, '6–8 reps', 120, 'Deja 1–2 en reserva. De pie y firme; la barra sale de delante de los hombros y sube recta.', { carga: 1, aprox: AP, lam: 'militar' }),
+      e('Elevaciones laterales', 'elevLateral', 3, '15 reps', 60, 'Codos un poco flexionados, hasta la altura de los hombros, sin impulso.', { carga: 1 }),
+      e('Pájaros (deltoide posterior)', 'pajaros', 3, '15 reps', 60, 'Peso ligero y control.', { carga: 1 }),
+      e('Paseo del granjero', 'granjero', 3, '40 m', 60, 'Pesado y erguido; trapecios y agarre.', { carga: 1, u: 'm' }),
+      e('Dead bug', 'deadBug', 3, '8 por lado', 30, 'Espalda baja pegada al suelo; brazo y pierna contrarios mientras exhalas.'),
+      e('Plancha lateral', 'planchaLateral', 3, '30 s por lado', 30, 'Cadera alta y cuerpo recto. El reloj encadena los dos lados.', { t: 30, lados: LADOS }),
+    ], frio: ['hombro', 'espalda', 'resp'] },
+    { foco: 'Cuerpo completo', min: 50, cal: ['Trote suave 3 min', 'Movilidad general 2 min'], ej: [
+      e('Thrusters con mancuernas', 'thruster', 3, '8 reps', 90, 'Sentadilla y press en un solo movimiento.', { carga: 1 }),
+      e('Swing con kettlebell', 'kbSwing', 3, '12 reps', 60, 'Potencia de cadera, espalda neutra.', { carga: 1 }),
+      e('Zancadas con mancuernas', 'zancada', 2, '8 por pierna', 75, 'Pasos largos y torso erguido; la rodilla sigue al pie.', { carga: 1 }),
+      e('Remo con mancuerna', 'remo', 3, '10 por brazo', 60, 'Una mano apoyada y los dos pies en el suelo; codo hacia la cadera. La espalda trabaja dos veces en la semana.', { carga: 1, lam: 'remo' }),
+      e('Escaladores', 'escalador', 3, '20 s', 40, 'Rodillas al pecho rápido, cadera estable.', { t: 20 }),
+    ], frio: ['psoas', 'isquio', 'pecho', 'resp'] },
   ] },
-  mujer: { nombre: 'Mujer', sub: 'Pesas · rutina completa', dias: [
-    { foco: 'Glúteos y piernas', min: 60, cal: ['Saltos de tijera 3 min', 'Puente de glúteo 2×15', 'Movilidad de cadera 2 min'], ej: [
-      e('Hip thrust con barra', 'hipThrust', 4, '8–10 reps', 120, 'Carga pesada: espalda alta en el banco, sube hasta alinear rodillas, cadera y hombros; aprieta arriba.'),
-      e('Sentadilla goblet', 'goblet', 4, '12 reps', 90, 'Kettlebell o mancuerna pegada al pecho; baja profundo con el pecho arriba.'),
-      e('Sentadilla búlgara', 'zancada', 3, '10 por pierna', 75, 'Pie de atrás en un banco y mancuernas; el peso en el talón de adelante.'),
-      e('Patada de glúteo con tobillera', 'patadaGluteo', 3, '15 por pierna', 45, 'En cuatro apoyos; talón al techo sin arquear la espalda.'),
-      e('Elevación de talones con mancuernas', 'talones', 3, '20 reps', 45, 'Pausa arriba y baja lento.'),
-    ], frio: ['Glúteos y cadera 3 min', 'Cuádriceps 1 min'] },
+  mujer: { nombre: 'Mujer', sub: 'Intermedio · énfasis en glúteo', dias: [
+    { foco: 'Glúteos y piernas', min: 55, cal: ['Bici o marcha rápida 3 min', 'Puente de glúteo 2×15', 'Movilidad de cadera 2 min'], ej: [
+      e('Hip thrust con barra', 'hipThrust', 4, '6–10 reps', 120, 'El ejercicio que marca tu avance: cuando las 4 series salen con 10, sube la carga. Espalda alta en el banco, sube hasta alinear rodillas, cadera y hombros; aprieta arriba.', { carga: 1, aprox: AP }),
+      e('Sentadilla goblet', 'goblet', 3, '10 reps', 90, 'Kettlebell o mancuerna pegada al pecho; baja profundo con el pecho arriba.', { carga: 1, lam: 'goblet' }),
+      e('Sentadilla búlgara', 'bulgara', 3, '8 por pierna', 75, 'El empeine de atrás va sobre el banco; el torso se inclina poco; el talón de delante manda. La serie son las dos piernas.', { carga: 1 }),
+      e('Patada de glúteo con tobillera', 'patadaGluteo', 2, '12 por pierna', 45, 'Como acabado. En cuatro apoyos; talón al techo sin arquear la espalda.', { carga: 1 }),
+      e('Elevación de talones con mancuernas', 'talones', 3, '15 reps', 45, 'Pausa arriba y baja lento.', { carga: 1 }),
+    ], frio: ['gluteo', 'cuad', 'psoas'] },
     { foco: 'Tren superior', min: 55, cal: ['Círculos de brazos 2 min', 'Remo ligero 2×12'], ej: [
-      e('Dominadas asistidas o jalón', 'dominada', 4, '8 reps', 90, 'Con banda o máquina; baja controlada. Equilibra la espalda.'),
-      e('Remo con mancuerna', 'remo', 3, '12 por brazo', 60, 'Espalda plana; el codo hacia la cadera.'),
-      e('Press de hombro con mancuernas', 'pressHombro', 3, '10 reps', 75, 'Abdomen firme, sube recto.'),
+      e('Dominadas asistidas o jalón', 'dominada', 4, '8 reps', 90, 'Con banda o máquina; baja controlada. Si no hay jalón ni barra, haz una serie más de remo.', { carga: 1 }),
+      e('Remo con mancuerna', 'remo', 3, '12 por brazo', 60, 'Una mano apoyada y los dos pies en el suelo; el codo hacia la cadera.', { carga: 1, lam: 'remo' }),
+      e('Press de hombro con mancuernas', 'pressHombro', 3, '10 reps', 75, 'Abdomen firme, sube recto.', { carga: 1 }),
       e('Flexiones', 'flexion', 3, '10 reps', 60, 'Cuerpo recto; de rodillas si pierdes la línea.'),
-      e('Elevaciones laterales', 'elevLateral', 3, '15 reps', 45, 'Hasta la altura de los hombros, sin impulso.'),
-      e('Extensión de tríceps', 'extTriceps', 3, '12 reps', 45, 'Codos quietos apuntando al techo.'),
-    ], frio: ['Pecho, hombros y brazos 3 min'] },
-    { foco: 'Cardio y core', min: 50, cal: ['Trote suave 3 min', 'Movilidad 2 min'], ej: [
-      e('Swing con kettlebell', 'kbSwing', 4, '15 reps', 45, 'Golpe de cadera; los brazos solo guían.'),
-      e('Saltos de tijera', 'tijeras', 4, '40 s', 20, 'Ritmo constante, aterrizaje suave.', 40),
-      e('Escaladores', 'escalador', 4, '30 s', 30, 'Rodillas al pecho, cadera estable.', 30),
-      e('Press Pallof', 'pallof', 3, '12 por lado', 40, 'Con banda a la altura del pecho; empuja al frente sin que el torso gire.'),
-      e('Elevación de piernas', 'levPiernas', 3, '15 reps', 40, 'Espalda baja pegada al suelo.'),
-      e('Plancha', 'plancha', 3, '40 s', 30, 'Cuerpo en línea recta.', 40),
-    ], frio: ['Abdomen y espalda 2 min', 'Respiración 1 min'] },
-    { foco: 'Glúteos e isquiotibiales', min: 55, cal: ['Bici o trote 3 min', 'Puente de glúteo 2×15'], ej: [
-      e('Peso muerto rumano con barra', 'rumanoBarra', 4, '10 reps', 90, 'Cadera atrás con las rodillas casi rectas; espalda neutra.'),
-      e('Sentadilla sumo con mancuerna', 'sumo', 4, '12 reps', 75, 'Pies muy abiertos, puntas afuera; baja recta con las rodillas hacia afuera.'),
-      e('Puente de glúteo con peso', 'puente', 4, '15 reps', 60, 'Disco o mancuerna sobre la cadera; aprieta un segundo arriba.'),
-      e('Patada de glúteo', 'patadaGluteo', 3, '15 por pierna', 45, 'Talón al techo sin arquear la espalda.'),
-    ], frio: ['Isquiotibiales y glúteos 3 min'] },
-    { foco: 'Cuerpo completo', min: 55, cal: ['Saltos de tijera 2 min', 'Movilidad general 3 min'], ej: [
-      e('Thrusters con mancuernas', 'thruster', 3, '12 reps', 75, 'Sentadilla y press en un solo movimiento.'),
-      e('Remo con mancuerna', 'remo', 3, '12 por brazo', 60, 'Espalda plana.'),
-      e('Burpees', 'burpee', 3, '10 reps', 60, 'Ritmo constante y salto arriba.'),
-      e('Giros rusos', 'girosRusos', 3, '20 toques', 40, 'Pecho alto y lento: gira desde el pecho.'),
-      e('Plancha lateral', 'planchaLateral', 3, '30 s por lado', 30, 'Cadera alta.', 30),
-      e('Superman', 'superman', 3, '12 reps', 40, 'Extiende largo más que subir; sin tirones.'),
-    ], frio: ['Estiramiento completo 4 min'] },
+      e('Elevaciones laterales', 'elevLateral', 3, '15 reps', 45, 'Hasta la altura de los hombros, sin impulso.', { carga: 1 }),
+      e('Extensión de tríceps', 'extTriceps', 3, '12 reps', 45, 'Codos quietos apuntando al techo.', { carga: 1 }),
+      e('Paseo del granjero ligero', 'granjero', 2, '30 m', 60, 'Torso alto y pasos cortos.', { carga: 1, u: 'm' }),
+    ], frio: ['pecho', 'hombro', 'espalda'] },
+    { foco: 'Acondicionamiento y core', min: 45, cal: ['Trote suave o marcha 3 min', 'Movilidad 2 min'], ej: [
+      e('Swing con kettlebell', 'kbSwing', 4, '12 reps', 60, 'Golpe de cadera; los brazos solo guían.', { carga: 1 }),
+      e('Press Pallof', 'pallof', 3, '10 por lado', 40, 'La pieza principal del core: banda a la altura del pecho, empuja al frente sin que el torso gire.'),
+      e('Dead bug', 'deadBug', 3, '8 por lado', 30, 'Espalda baja pegada al suelo; brazo y pierna contrarios mientras exhalas.'),
+      e('Plancha', 'plancha', 3, '35 s', 30, 'Cuerpo en línea recta.', { t: 35, lam: 'plancha' }),
+      e('Saltos de tijera', 'tijeras', 3, '30 s', 40, 'Ritmo constante y aterrizaje suave.', { t: 30, imp: 1 }),
+    ], frio: ['espalda', 'psoas', 'resp'] },
+    { foco: 'Isquios y glúteos', min: 50, cal: ['Bici o trote 3 min', 'Puente de glúteo 2×15'], ej: [
+      e('Peso muerto rumano con barra', 'rumanoBarra', 4, '8 reps', 90, 'Cadera atrás con las rodillas casi rectas; espalda larga. Junto con el hip thrust, el que tiene que subir de carga.', { carga: 1, aprox: AP, lam: 'rumano' }),
+      e('Sentadilla sumo con mancuerna', 'sumo', 3, '10 reps', 75, 'Pies muy abiertos, puntas afuera; baja recta con las rodillas hacia afuera.', { carga: 1 }),
+      e('Curl femoral o talones deslizados', 'talonesDeslizados', 3, '10 reps', 60, 'En máquina o en el suelo con los talones sobre una toalla: cadera arriba y arrastra los talones hacia ti.'),
+      e('Peso muerto rumano a una pierna', 'rumanoUnaPierna', 3, '8 por pierna', 60, 'Agarrada a un soporte con una mano; el pecho baja mientras la pierna de atrás sube, cadera recta.', { carga: 1 }),
+    ], frio: ['isquio', 'gluteo', 'psoas'] },
+    { foco: 'Cuerpo completo', min: 45, cal: ['Marcha rápida 2 min', 'Movilidad general 3 min'], ej: [
+      e('Remo con mancuerna', 'remo', 3, '12 por brazo', 60, 'Una mano apoyada; espalda larga.', { carga: 1, lam: 'remo' }),
+      e('Thrusters con mancuernas', 'thruster', 3, '8 reps', 75, 'Sentadilla y press en un solo movimiento.', { carga: 1 }),
+      e('Paseo del granjero', 'granjero', 3, '30 m', 60, 'Pesado y erguido.', { carga: 1, u: 'm' }),
+      e('Plancha lateral', 'planchaLateral', 3, '30 s por lado', 30, 'Cadera alta. El reloj encadena los dos lados.', { t: 30, lados: LADOS }),
+      e('Bird-dog', 'birdDog', 3, '8 por lado', 30, 'En cuatro apoyos, estira brazo y pierna contrarios sin mover la cadera.'),
+    ], frio: ['gluteo', 'isquio', 'pecho', 'resp'] },
   ] },
-  mama: { nombre: 'Mamá', sub: 'Madres de casa · en casa, pesas ligeras', dias: [
+  mama: { nombre: 'Mamá', sub: 'En casa · pesas ligeras · bajo impacto', dias: [
     { foco: 'Piernas y glúteos', min: 30, cal: ['Respiración con suelo pélvico 2 min: al exhalar, sube el suelo pélvico y mete el ombligo', 'Marcha en el sitio 2 min'], ej: [
-      e('Sentadilla a la silla con mochila', 'goblet', 3, '12 reps', 45, 'Mochila o mancuerna ligera al pecho; baja hasta rozar la silla y sube empujando con los talones.'),
+      e('Sentadilla a la silla con mochila', 'goblet', 3, '12 reps', 45, 'Mochila o mancuerna ligera al pecho; baja hasta rozar la silla y sube empujando con los talones.', { carga: 1, lam: 'goblet', ln: 'En casa pon una silla detrás y baja hasta rozarla (la lámina no la lleva). Pecho alto y talones en el suelo.' }),
       e('Puente de glúteo', 'puente', 3, '15 reps', 40, 'Exhala al subir la cadera y aprieta arriba.'),
-      e('Zancada atrás', 'zancada', 3, '10 por pierna', 45, 'Paso hacia atrás y apoyo en una silla si hace falta; la rodilla no se va hacia adentro y el peso va en el talón.'),
+      e('Zancada atrás', 'zancadaAtras', 3, '10 por pierna', 45, 'Paso hacia atrás, con una silla al lado si hace falta; la rodilla no se va hacia adentro y el peso va en el talón de delante.'),
       e('Bird-dog', 'birdDog', 3, '10 por lado', 30, 'En cuatro apoyos, estira el brazo y la pierna contrarios sin mover la cadera.'),
       e('Elevación de talones', 'talones', 3, '20 reps', 30, 'Apóyate en la pared; pausa arriba.'),
-    ], frio: ['Glúteos y cadera 2 min', 'Respiración 1 min'] },
+    ], frio: ['gluteo', 'cuad', 'resp'] },
     { foco: 'Brazos y espalda con pesas ligeras', min: 30, cal: ['Marcha con brazos 3 min', 'Círculos de brazos 1 min'], ej: [
       e('Flexiones en pared o de rodillas', 'flexion', 3, '10 reps', 45, 'Cuerpo recto de la cabeza a las rodillas; baja el pecho controlado.'),
-      e('Remo con mancuernas ligeras o botellas', 'remo', 3, '12 reps', 45, 'Cadera atrás y espalda plana; lleva los codos hacia atrás.'),
-      e('Press de hombro con mancuernas ligeras', 'pressHombro', 3, '12 reps', 45, 'Abdomen firme, sube recto.'),
-      e('Elevaciones laterales', 'elevLateral', 3, '12 reps', 40, 'Hasta la altura de los hombros, despacio.'),
-      e('Curl de bíceps', 'curl', 3, '12 reps', 40, 'Codos pegados, baja lento. Ayuda a cargar al bebé.'),
-    ], frio: ['Movilidad torácica 2 min (abre el pecho y gira la espalda alta)', 'Brazos y espalda 1 min'] },
-    { foco: 'Cardio suave y core seguro', min: 30, cal: ['Marcha 2 min', 'Respiración con suelo pélvico 2 min'], ej: [
-      e('Marcha rápida con rodillas altas', 'marcha', 4, '60 s', 20, 'Sin saltar: sube bien las rodillas y mueve los brazos.', 60),
-      e('Tijeras sin salto', 'tijeras', 4, '30 s', 20, 'Abre un pie al lado y sube los brazos; alterna sin impacto.', 30),
+      e('Remo a una mano apoyada en la silla', 'remo', 3, '12 por brazo', 45, 'Una mano en la silla o la mesa y los dos pies en el suelo; espalda larga y codo hacia la cadera.', { carga: 1, lam: 'remo', ln: 'Copia este apoyo con una silla o una mesa firme: una mano apoyada y los dos pies en el suelo.' }),
+      e('Press de hombro con mancuernas ligeras', 'pressHombro', 3, '12 reps', 45, 'Abdomen firme, sube recto.', { carga: 1 }),
+      e('Aperturas con banda', 'aperturas', 3, '12 reps', 40, 'Con banda, o brazos al frente abriendo el pecho sin peso. Hombros lejos de las orejas.'),
+      e('Paseo con dos botellas', 'granjero', 3, '20 m', 40, 'Una botella o bolsa en cada mano, torso alto y pasos cortos: como cargar la compra.', { carga: 1, u: 'm' }),
+      e('Curl de bíceps', 'curl', 2, '12 reps', 40, 'Codos pegados, baja lento. Ayuda a cargar al bebé.', { carga: 1 }),
+    ], frio: ['toracica', 'pecho', 'hombro'] },
+    { foco: 'Cardio suave y core', min: 30, cal: ['Marcha 2 min', 'Respiración con suelo pélvico 2 min'], ej: [
+      e('Marcha rápida con rodillas altas', 'marcha', 4, '60 s', 20, 'Sin saltar: sube bien las rodillas y mueve los brazos.', { t: 60 }),
+      e('Paso lateral (tijeras sin salto)', 'pasoLateral', 4, '30 s', 20, 'Un pie se abre al lado mientras subes los brazos; el otro no se despega. Alterna sin impacto.', { t: 30 }),
       e('Dead bug', 'deadBug', 3, '8 por lado', 30, 'Boca arriba, espalda baja pegada al suelo; estira brazo y pierna contrarios mientras exhalas.'),
-      e('Plancha de rodillas', 'plancha', 3, '30 s', 30, 'Cuerpo en línea y abdomen suave pero firme; sin aguantar la respiración.', 30),
+      e('Plancha de rodillas', 'planchaRodillas', 3, '30 s', 30, 'Rodillas en el suelo, cuerpo en línea y abdomen suave pero firme; sin aguantar la respiración. Si aparece el cono, ese día solo dead bug y bird-dog.', { t: 30, lam: 'plancha', ln: 'La lámina es la plancha completa. Tú sigue con las rodillas en el suelo hasta que la línea sea fácil y el abdomen no haga cono.' }),
       e('Bird-dog', 'birdDog', 3, '10 por lado', 30, 'Lento y estable.'),
-    ], frio: ['Espalda y cadera 2 min', 'Respiración 1 min'] },
+    ], frio: ['espalda', 'psoas', 'resp'] },
     { foco: 'Glúteos y piernas II', min: 30, cal: ['Marcha 3 min', 'Sentadilla sin peso 1×10'], ej: [
-      e('Sentadilla sumo con mochila', 'sumo', 3, '15 reps', 40, 'Pies abiertos y puntas afuera; espalda recta.'),
-      e('Peso muerto con mancuernas ligeras', 'rumano', 3, '12 reps', 45, 'Bisagra de cadera: lleva la cadera atrás, no tires con la espalda baja.'),
+      e('Sentadilla sumo con mochila', 'sumo', 3, '15 reps', 40, 'Pies abiertos y puntas afuera; espalda recta.', { carga: 1 }),
+      e('Peso muerto con mancuernas ligeras', 'rumano', 3, '12 reps', 45, 'Bisagra de cadera: lleva la cadera atrás, no tires con la espalda baja.', { carga: 1, lam: 'rumano' }),
       e('Puente de glúteo con pausa', 'puente', 3, '15 reps', 40, 'Sostén 2 segundos arriba en cada repetición.'),
       e('Dead bug', 'deadBug', 3, '8 por lado', 30, 'Espalda baja pegada al suelo todo el tiempo.'),
-    ], frio: ['Isquiotibiales y glúteos 3 min'] },
+    ], frio: ['isquio', 'gluteo', 'resp'] },
     { foco: 'Cuerpo completo en casa', min: 30, cal: ['Marcha 2 min', 'Movilidad general 2 min'], ej: [
-      e('Sentadilla con press', 'thruster', 3, '12 reps', 45, 'Mancuernas ligeras o botellas: baja a la sentadilla y al subir empuja arriba.'),
-      e('Escaladores lentos con manos en la silla', 'escalador', 3, '30 s', 30, 'Rodilla al pecho alternando, sin prisa.', 30),
-      e('Press Pallof con banda', 'pallof', 3, '10 por lado', 30, 'Empuja al frente sin que el torso gire. Core seguro tras el parto.'),
-      e('Plancha lateral de rodillas', 'planchaLateral', 3, '20 s por lado', 30, 'Codo bajo el hombro y cadera arriba.', 20),
-      e('Marcha final', 'marcha', 2, '60 s', 20, 'Baja el ritmo poco a poco.', 60),
-    ], frio: ['Estiramiento completo 3 min', 'Respiración 1 min'] },
+      e('Sentadilla con press', 'thruster', 3, '12 reps', 45, 'Mancuernas ligeras o botellas: baja a la sentadilla y al subir empuja arriba.', { carga: 1 }),
+      e('Escaladores lentos con manos en la silla', 'escaladorSilla', 3, '30 s', 30, 'Manos en el asiento de una silla firme contra la pared; rodilla al pecho alternando, sin prisa. Si el abdomen hace cono, cambia a marcha con las rodillas bajas.', { t: 30 }),
+      e('Press Pallof con banda', 'pallof', 3, '10 por lado', 30, 'Opción de bajo impacto: empuja al frente sin que el torso gire. Sin banda: palmas juntas delante del pecho y aguanta 15 s.'),
+      e('Plancha lateral de rodillas', 'planchaLateralRodillas', 3, '20 s por lado', 30, 'Codo bajo el hombro y cadera arriba. El reloj encadena los dos lados.', { t: 20, lados: LADOS }),
+      e('Marcha final', 'marcha', 2, '60 s', 20, 'Baja el ritmo poco a poco.', { t: 60 }),
+    ], frio: ['toracica', 'gluteo', 'resp'] },
   ] },
 };
+const AVISO_MAMA = 'Exhala en el esfuerzo. Si hay dolor, cono en el abdomen, pérdidas, pesadez pélvica o mareo, para.';
 const DIAS = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie'];
+const DIAS_LARGO = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes'];
 
 // ---------------- estado (solo en este teléfono) ----------------
 const guardar = (k, val) => { try { localStorage.setItem(k, JSON.stringify(val)); } catch { /* sin almacenamiento */ } };
 const leer = (k, def) => { try { const x = JSON.parse(localStorage.getItem(k)); return x ?? def; } catch { return def; } };
-const hoyIdx = (() => { const d = new Date().getDay(); return d >= 1 && d <= 5 ? d - 1 : 0; })();
-const hoyLocal = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+const objeto = (x) => (x && typeof x === 'object' && !Array.isArray(x) ? x : {});
+const fechaDe = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const hoyLocal = () => fechaDe(new Date());
+const deFecha = (f) => { const [a, m, d] = String(f).split('-').map(Number); return new Date(a, (m || 1) - 1, d || 1, 12); };
+const fechaCorta = (f) => { try { return deFecha(f).toLocaleDateString('es', { weekday: 'short', day: 'numeric', month: 'short' }); } catch { return f; } };
+const lunesDe = (d) => { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
+const infoHoy = () => { const d = new Date().getDay(); const lab = d >= 1 && d <= 5; return { lab, idx: lab ? d - 1 : 0, fecha: hoyLocal() }; };
+let HOY = infoHoy();
 const valido = (k) => Object.prototype.hasOwnProperty.call(PROGRAMAS, k);
-function cargarHechos() { const h = leer('rj-hechos', null), s0 = {}; if (h && typeof h === 'object' && h.fecha === hoyLocal() && h.s && typeof h.s === 'object') for (const [k, v] of Object.entries(h.s)) if (Array.isArray(v)) s0[k] = v.filter((x) => Number.isInteger(x) && x >= 0 && x < 20); return { fecha: hoyLocal(), s: s0 }; }
+
+// series hechas por fecha (no se borran a medianoche: forman el diario)
+let series = objeto(leer('rj-series', {}));
+let diario = objeto(leer('rj-diario', {}));
+let notas = objeto(leer('rj-notas', {}));
+let pesos = objeto(leer('rj-pesos', {}));
+let ajustes = { auto: true, w: 180, d: 60, n: 3, ...objeto(leer('rj-ajustes', {})) };
+(function podar() { const lim = new Date(); lim.setDate(lim.getDate() - 120); const corte = fechaDe(lim);
+  for (const f of Object.keys(series)) if (f < corte) delete series[f];
+  for (const k of Object.keys(diario)) if (k.slice(0, 10) < corte) delete diario[k]; })();
+
+// ciclo de 4 semanas: la 4.ª es suave (descarga)
+let ciclo = leer('rj-ciclo', null);
+if (typeof ciclo !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(ciclo)) { ciclo = fechaDe(lunesDe(new Date())); guardar('rj-ciclo', ciclo); }
+const semAbs = () => Math.max(1, Math.floor(Math.round((lunesDe(new Date()) - deFecha(ciclo)) / 864e5) / 7) + 1);
+const semCiclo = () => ((semAbs() - 1) % 4) + 1;
+const suave = () => semCiclo() === 4 && leer('rj-suave-no', 0) !== semAbs();
+
 const inicial = (location.hash || '').replace('#', '');
 let prog = valido(inicial) ? inicial : leer('rj-prog', 'jay'); if (!valido(prog)) prog = 'jay';
-let dia = hoyIdx;
-let hechos = cargarHechos();
-// si la app queda abierta y pasa la medianoche, el día nuevo empieza limpio
-const revisarFecha = () => { if (hechos.fecha !== hoyLocal()) { hechos = cargarHechos(); pararReloj(); pintarTabs(); pintarDia(); } };
-document.addEventListener('visibilitychange', () => { if (!document.hidden) revisarFecha(); });
+let dia = HOY.idx;
+
+// ajustes del día: semana suave y primeras semanas de Mamá
+function ajustar(x) {
+  const o = { ...x, nota: '', fuera: false, base: x.s };
+  if (prog === 'mama' && semAbs() <= 2 && o.s > 2) o.s = 2;
+  if (suave()) {
+    if (o.impacto) o.fuera = true;
+    else if (o.carga) { o.s = Math.max(1, Math.ceil(o.s / 2)); o.nota = 'Semana suave: mitad de series y carga más ligera.'; }
+    if (o.trabajo === 180) { o.trabajo = 120; o.d = o.d.replace('3 min', '2 min'); o.nota = 'Semana suave: asaltos de 2 minutos.'; }
+  }
+  return o;
+}
+const ejercicios = () => PROGRAMAS[prog].dias[dia].ej.map(ajustar);
+const clave = (x) => `${prog}|${dia}|${x.n}`;
+const deHoy = () => (series[HOY.fecha] = objeto(series[HOY.fecha]));
+const hechasDe = (x) => { const v = deHoy()[clave(x)]; return Array.isArray(v) ? v.filter((k) => Number.isInteger(k) && k >= 0 && k < 20) : []; };
+
+// ---------------- historial de pesos ----------------
+const claveP = (x) => `${prog}|${x.n}`;
+const numES = (n) => String(n).replace('.', ',');
+const tope = (d) => { const m = String(d).match(/(\d+)(?:\s*[–-]\s*(\d+))?/); return m ? +(m[2] || m[1]) : 0; };
+function registrarPeso(x, j, k, quitar) {
+  const kp = claveP(x), lista = Array.isArray(pesos[kp]) ? pesos[kp].filter((q) => !(q.f === HOY.fecha && q.s === k)) : [];
+  if (!quitar) {
+    const kg = parseFloat(String($('kg-' + j)?.value || '').replace(',', '.')), r = parseInt($('rp-' + j)?.value || '', 10);
+    if (Number.isFinite(kg) || Number.isFinite(r)) lista.push({ f: HOY.fecha, s: k, kg: Number.isFinite(kg) ? kg : null, r: Number.isFinite(r) ? r : null });
+  }
+  pesos[kp] = lista.slice(-300); guardar('rj-pesos', pesos);
+}
+function textoUltima(x) {
+  const lista = Array.isArray(pesos[claveP(x)]) ? pesos[claveP(x)] : []; if (!lista.length) return '';
+  const u = x.u === 'm' ? ' m' : '', fmt = (q) => `${q.kg != null ? numES(q.kg) + ' kg' : '—'} × ${q.r ?? '—'}${u}`;
+  const previas = lista.filter((q) => q.f < HOY.fecha), hoy = lista.filter((q) => q.f === HOY.fecha).sort((a, b) => a.s - b.s);
+  let html = '';
+  if (previas.length) { const f = previas.reduce((m, q) => (q.f > m ? q.f : m), ''), ses = previas.filter((q) => q.f === f).sort((a, b) => a.s - b.s);
+    html += `Última vez (${esc(fechaCorta(f))}): ${ses.map(fmt).join(' · ')}`;
+    const tp = tope(x.d); if (tp && ses.length >= x.base && ses.every((q) => (q.r || 0) >= tp)) html += `<br><b class="sube">Todas completas la última vez: hoy sube la carga más pequeña.</b>`; }
+  if (hoy.length) html += `${html ? '<br>' : ''}Hoy: ${hoy.map(fmt).join(' · ')}`;
+  return html;
+}
+const ultimoPeso = (x) => { const l = pesos[claveP(x)]; if (!Array.isArray(l)) return null; for (let i = l.length - 1; i >= 0; i--) if (l[i].kg != null) return l[i].kg; return null; };
 
 // ---------------- interfaz ----------------
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const mmss = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+const descTxt = (r) => (r >= 60 ? numES(Math.round((r / 60) * 100) / 100) + ' min' : r + ' s');
+const semanaFechas = () => { const l = lunesDe(new Date()); return DIAS.map((_, i) => { const d = new Date(l); d.setDate(l.getDate() + i); return fechaDe(d); }); };
+function estadoDia(i) { // mejor registro de esta semana para ese día del programa
+  let mejor = null; for (const f of semanaFechas()) { const r = diario[`${f}|${prog}|${i}`]; if (r && r.h > 0 && (!mejor || r.h / r.t > mejor.h / mejor.t)) mejor = r; } return mejor;
+}
+function pintarCab() {
+  const sesiones = semanaFechas().filter((f) => Object.keys(diario).some((k) => k.startsWith(f + '|' + prog + '|') && diario[k].h > 0)).length;
+  $('cab-meta').innerHTML = `<span class="chip${suave() ? ' oro' : ''}">Ciclo: semana ${semCiclo()} de 4${suave() ? ' · suave' : ''}</span><span class="chip">Esta semana: ${sesiones} de 5 días</span>`;
+}
 function pintarTabs() {
   $('tabs').innerHTML = Object.entries(PROGRAMAS).map(([k, p]) => `<button type="button" aria-pressed="${k === prog}" data-p="${k}">${k === 'jay' ? '<b>Jay</b>' : esc(p.nombre)}</button>`).join('');
-  $('dias').innerHTML = PROGRAMAS[prog].dias.map((d, i) => `<button type="button" aria-pressed="${i === dia}" data-d="${i}"><b>${DIAS[i]}</b><small>${i === hoyIdx ? '<span class="hoy">hoy · </span>' : ''}${esc(d.foco)}</small></button>`).join('');
+  $('dias').innerHTML = PROGRAMAS[prog].dias.map((d, i) => { const st = estadoDia(i), esHoy = HOY.lab && i === HOY.idx;
+    const marca = st ? (st.h >= st.t ? '<span class="ok">✓</span>' : `${st.h}/${st.t}`) : '';
+    return `<button type="button" aria-pressed="${i === dia}" data-d="${i}" aria-label="${DIAS_LARGO[i]}: ${esc(d.foco)}${esHoy ? ' (hoy)' : ''}"><b>${DIAS[i]}</b><small class="foco">${esc(d.foco)}</small><small class="est">${esHoy ? '<span class="hoy">hoy</span>' : ''}${esHoy && marca ? ' ' : ''}${marca}</small></button>`; }).join('');
+  pintarCab();
 }
-const clave = (j) => `${prog}|${dia}|${j}`;
+function tarjeta(x, j) {
+  const lam = x.lam && LAM[x.lam], hechas = hechasDe(x);
+  const kgUlt = ultimoPeso(x), rpDef = tope(x.d) || '';
+  return `<article class="ej${x.fuera ? ' fuera' : ''}" id="ej-${j}">
+    <div class="demo"><span class="num">${j + 1}</span><canvas data-m="${x.m}" role="img" aria-label="Demostración animada: ${esc(x.n)}"></canvas></div>
+    <div class="info"><h4>${esc(x.n)}</h4>
+      <div class="dosis"><span>${x.s} × ${esc(x.d)}</span><span class="r">descanso ${descTxt(x.r)}</span></div>
+      ${x.aprox && !x.fuera ? `<p class="aprox">${esc(x.aprox)}</p>` : ''}
+      <p class="tecnica">${esc(x.tec)}</p>
+      ${prog === 'mama' ? `<p class="linea-mama">${esc(AVISO_MAMA)}</p>` : ''}
+      ${x.nota ? `<p class="nota-suave">${esc(x.nota)}</p>` : ''}
+      ${x.fuera ? '<p class="nota-suave">Semana suave: este ejercicio hoy no se hace (sin saltos ni burpees).</p>' : `
+      ${x.carga ? `<div class="carga"><label>kg <input id="kg-${j}" type="number" inputmode="decimal" step="0.5" min="0" value="${kgUlt ?? ''}" aria-label="Kilos de ${esc(x.n)}"></label><label>${x.u === 'm' ? 'metros' : 'reps'} <input id="rp-${j}" type="number" inputmode="numeric" min="0" value="${rpDef}" aria-label="${x.u === 'm' ? 'Metros' : 'Repeticiones'} de ${esc(x.n)}"></label></div><p class="ultima" id="ult-${j}">${textoUltima(x)}</p>` : ''}
+      <div class="series">${Array.from({ length: x.s }, (_, k) => `<button type="button" class="serie" data-j="${j}" data-k="${k}" aria-pressed="${hechas.includes(k)}" aria-label="Serie ${k + 1} de ${esc(x.n)}">${k + 1}</button>`).join('')}</div>
+      ${x.trabajo && !x.lados && x.s > 1 ? `<button type="button" class="boton seguidas" data-seg="${j}">▶ Las ${x.s} series seguidas con el reloj</button>` : ''}`}
+      ${lam ? `<details class="lamina"><summary>Ver lámina de técnica</summary><figure><img src="${lam.src}" width="720" height="960" loading="lazy" decoding="async" alt="${esc(lam.alt)}"><figcaption>${esc(x.ln || lam.nota)}</figcaption></figure></details>` : ''}
+    </div></article>`;
+}
 function pintarDia() {
-  const p = PROGRAMAS[prog], d = p.dias[dia];
-  const series = d.ej.reduce((s, x) => s + x.s, 0);
+  const p = PROGRAMAS[prog], d = p.dias[dia], ej = ejercicios();
+  const tot = ej.filter((x) => !x.fuera).reduce((s, x) => s + x.s, 0), claveNota = `${HOY.fecha}|${prog}|${dia}`;
+  const avisos = [];
+  if (!HOY.lab) avisos.push(`<div class="aviso"><b>Fin de semana</b><span>Hoy toca descansar. Te dejo el lunes a la vista para preparar la semana.</span></div>`);
+  if (suave()) avisos.push(`<div class="aviso"><b>Semana suave (descarga)</b><span>Semana 4 de 4: mitad de series de fuerza, cargas más ligeras, asaltos de 2 minutos, sin saltos ni burpees. La técnica de sombra y la cuerda suave se mantienen. La semana que viene empieza un ciclo nuevo.</span><button type="button" data-suave="no">Entrenar normal esta semana</button></div>`);
+  else if (semCiclo() === 4) avisos.push(`<div class="aviso"><b>Semana 4 de 4</b><span>Has elegido entrenar normal esta semana.</span><button type="button" data-suave="si">Volver a la semana suave</button></div>`);
+  if (prog === 'mama') {
+    avisos.push(`<div class="aviso salud"><b>Antes de empezar</b><span>Solo con el visto bueno de tu médico. Cuántas semanas después del parto, y si fue cesárea, lo decide tu profesional, no esta app. No es una rutina de embarazo ni un tratamiento de suelo pélvico o de diástasis.</span></div>`);
+    if (semAbs() <= 2) avisos.push(`<div class="aviso"><b>Semanas 1 y 2</b><span>2 series en todo. Desde la 3.ª semana, 3 series si no apareció ninguna señal de aviso.</span></div>`);
+  }
+  const asaltos = d.asaltos ? `<button type="button" class="boton oro" data-asaltos-dia="1">▶ Los ${ej.filter((x) => x.trabajo >= 120 && x.s === 1).length} asaltos seguidos (${mmss(suave() ? 120 : 180)} / 1:00)</button>` : '';
   $('dia').innerHTML = `<section class="dia-cab"><h2>${esc(DIAS[dia])} · ${esc(d.foco)}</h2>
-    <div class="meta"><span class="chip">${esc(p.nombre)} · ${esc(p.sub)}</span><span class="chip">≈ ${d.min} min</span><span class="chip">${d.ej.length} ejercicios · ${series} series</span></div>
-    <div class="progreso" aria-hidden="true"><i id="barra"></i></div></section>
+    <div class="meta"><span class="chip">${esc(p.nombre)} · ${esc(p.sub)}</span><span class="chip">≈ ${d.min} min</span><span class="chip">${ej.length} ejercicios · ${tot} series</span></div>
+    <div class="progreso" aria-hidden="true"><i id="barra"></i></div><div class="prog-txt" id="prog-txt" aria-live="polite"></div></section>
+    <section class="bloque">${avisos.join('')}
+      <details class="aviso regla"><summary>Cómo subir la carga (1–2 repeticiones en reserva)</summary><ul>
+        <li>Termina cada serie con 1–2 repeticiones limpias en reserva: aún saldrían, pero no las haces.</li>
+        <li>Si la última repetición se deforma, la próxima vez baja un poco la carga.</li>
+        <li>Cuando todas las series salen completas (el número más alto de la dosis) con esa reserva, la vez siguiente sube la carga más pequeña que tengas. Si una se queda corta, repite el mismo peso.</li>
+        <li>Apunta los kilos en la tarjeta: la app recuerda la última vez y te avisa cuando toca subir.</li>
+        <li>Cada 4.ª semana es suave. La app la marca sola.</li></ul></details>
+      ${asaltos}</section>
     <section class="bloque"><h3>Calentamiento</h3><ul class="lista-simple">${d.cal.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></section>
-    <section class="bloque"><h3>Ejercicios</h3>${d.ej.map((x, j) => `<article class="ej" id="ej-${j}">
-      <div class="demo"><span class="num">${j + 1}</span><canvas data-m="${x.m}" role="img" aria-label="Demostración animada: ${esc(x.n)}"></canvas></div>
-      <div class="info"><h4>${esc(x.n)}</h4>
-        <div class="dosis"><span>${x.s} × ${esc(x.d)}</span><span class="r">descanso ${x.r >= 60 ? (x.r / 60).toString().replace('.', ',') + ' min' : x.r + ' s'}</span></div>
-        <p class="tecnica">${esc(x.tec)}</p>
-        <div class="series">${Array.from({ length: x.s }, (_, k) => `<button type="button" class="serie" data-j="${j}" data-k="${k}" aria-pressed="false" aria-label="Serie ${k + 1} de ${esc(x.n)}">${k + 1}</button>`).join('')}</div>
-      </div></article>`).join('')}</section>
-    <section class="bloque"><h3>Enfriamiento</h3><ul class="lista-simple">${d.frio.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></section>`;
+    <section class="bloque"><h3>Ejercicios</h3>${ej.map(tarjeta).join('')}</section>
+    <section class="bloque"><h3>Enfriamiento · sin rebotes</h3><ul class="lista-simple">${d.frio.map((x) => `<li>${esc(ESTIR[x] || x)}</li>`).join('')}</ul></section>
+    <section class="bloque diario-hoy"><h3><label for="nota-dia">Diario de hoy</label></h3><textarea id="nota-dia" placeholder="Cómo te sentiste, cargas, molestias…">${esc(typeof notas[claveNota] === 'string' ? notas[claveNota] : '')}</textarea><small>Se guarda en este teléfono y sigue ahí mañana.</small></section>`;
   marcar(); observar();
 }
 function marcar() {
-  const d = PROGRAMAS[prog].dias[dia]; let n = 0, tot = 0;
-  d.ej.forEach((x, j) => { const h = hechos.s[clave(j)] || []; tot += x.s; n += h.length;
+  const ej = ejercicios(); let n = 0, tot = 0;
+  ej.forEach((x, j) => { if (x.fuera) return; const h = hechasDe(x); tot += x.s; n += h.filter((k) => k < x.s).length;
     document.querySelectorAll(`.serie[data-j="${j}"]`).forEach((b) => b.setAttribute('aria-pressed', h.includes(+b.dataset.k) ? 'true' : 'false'));
-    const art = $('ej-' + j); if (art) art.classList.toggle('hecho', h.length >= x.s); });
+    const art = $('ej-' + j); if (art) art.classList.toggle('hecho', h.filter((k) => k < x.s).length >= x.s);
+    const u = $('ult-' + j); if (u) u.innerHTML = textoUltima(x); });
   const barra = $('barra'); if (barra) barra.style.width = (tot ? (100 * n) / tot : 0) + '%';
+  const pt = $('prog-txt'); if (pt) pt.textContent = `${n} de ${tot} series${tot && n >= tot ? ' · sesión completa' : ''}`;
+  const kd = `${HOY.fecha}|${prog}|${dia}`;
+  if (n > 0) diario[kd] = { h: n, t: tot }; else delete diario[kd];
+  guardar('rj-diario', diario);
+  return { n, tot };
+}
+function marcarSerie(x, j, k, valor) {
+  const c = clave(x), h = hechasDe(x), ya = h.includes(k);
+  if (valor === ya) return;
+  deHoy()[c] = valor ? [...h, k] : h.filter((y) => y !== k);
+  guardar('rj-series', series);
+  if (x.carga) registrarPeso(x, j, k, !valor);
+  marcar(); pintarTabs(); pintarDiario();
 }
 
-// ---------------- cronómetro ----------------
-let reloj = null, audio = null;
-function pitido(f = 880, ms = 160) { try { audio = audio || new (window.AudioContext || window.webkitAudioContext)(); const o = audio.createOscillator(), g = audio.createGain(); o.frequency.value = f; g.gain.value = 0.15; o.connect(g); g.connect(audio.destination); o.start(); o.stop(audio.currentTime + ms / 1000); } catch { /* sin audio */ } }
-function arrancar(modo, seg, que, luego, ref) {
-  reloj = { modo, fin: Date.now() + seg * 1000, que, luego, ref }; $('reloj').hidden = false; tic();
+// ---------------- sonido, vibración y pantalla encendida ----------------
+let audio = null;
+function desbloquear() { try { audio = audio || new (window.AudioContext || window.webkitAudioContext)(); if (audio.state === 'suspended') audio.resume(); } catch { /* sin audio */ } }
+function tono(f, ms, vol = 0.22, retraso = 0) {
+  if (!audio) return; try { const t0 = audio.currentTime + retraso, o = audio.createOscillator(), g = audio.createGain(); o.type = 'sine'; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(vol, t0 + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t0 + ms / 1000);
+    o.connect(g); g.connect(audio.destination); o.start(t0); o.stop(t0 + ms / 1000 + 0.03); } catch { /* sin audio */ }
 }
-function pararReloj() { reloj = null; $('reloj').hidden = true; }
+const vibrar = (p) => { try { if (navigator.vibrate) navigator.vibrate(p); } catch { /* sin vibración */ } };
+const SON = {
+  cuenta: () => tono(660, 110, 0.16),
+  trabajo: () => { tono(880, 160); tono(1175, 280, 0.24, 0.18); vibrar(120); },
+  descanso: () => { tono(587, 220); tono(440, 420, 0.22, 0.24); vibrar([180, 80, 180]); },
+  fin: () => { tono(988, 170); tono(988, 170, 0.22, 0.24); tono(1319, 600, 0.25, 0.48); vibrar([200, 100, 200, 100, 500]); },
+};
+let bloqueo = null, video = null;
+const VIDEO = 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAWsbW9vdgAAAGxtdmhkAAAAAAAAAAAAAAAAAAAD6AAAB9AAAQAAAQAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAqJ0cmFrAAAAXHRraGQAAAADAAAAAAAAAAAAAAABAAAAAAAAB9AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAABAAAAAQAAAAAAAkZWR0cwAAABxlbHN0AAAAAAAAAAEAAAfQAABAAAABAAAAAAIabWRpYQAAACBtZGhkAAAAAAAAAAAAAAAAAABAAAAAoABVxAAAAAAALWhkbHIAAAAAAAAAAHZpZGUAAAAAAAAAAAAAAABWaWRlb0hhbmRsZXIAAAABxW1pbmYAAAAUdm1oZAAAAAEAAAAAAAAAAAAAACRkaW5mAAAAHGRyZWYAAAAAAAAAAQAAAAx1cmwgAAAAAQAAAYVzdGJsAAAAwXN0c2QAAAAAAAAAAQAAALFhdmMxAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAABAAEABIAAAASAAAAAAAAAABDExhdmMgbGlieDI2NAAAAAAAAAAAAAAAAAAAAAAAAAAAGP//AAAAN2F2Y0MBZAAK/+EAGWdkAAqscgRewEQAAAMABAAAAwAQPEiWEYABAAdo6EOPEyEw/fj4AAAAABBwYXNwAAAAAQAAAAEAAAAUYnRydAAAAAAAAAvQAAAAAAAAABhzdHRzAAAAAAAAAAEAAAAEAAAgAAAAABRzdHNzAAAAAAAAAAEAAAABAAAAKGN0dHMAAAAAAAAAAwAAAAEAAEAAAAAAAQAAgAAAAAACAAAgAAAAAChzdHNjAAAAAAAAAAIAAAABAAAAAgAAAAEAAAACAAAAAQAAAAEAAAAkc3RzegAAAAAAAAAAAAAABAAAAsoAAAAOAAAADgAAAA4AAAAcc3RjbwAAAAAAAAADAAAF3AAACLgAAAjWAAACWXRyYWsAAABcdGtoZAAAAAMAAAAAAAAAAAAAAAIAAAAAAAAH0AAAAAAAAAAAAAAAAQEAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAACRlZHRzAAAAHGVsc3QAAAAAAAAAAQAAB9AAAAQAAAEAAAAAAdFtZGlhAAAAIG1kaGQAAAAAAAAAAAAAAAAAAB9AAABCgFXEAAAAAAAtaGRscgAAAAAAAAAAc291bgAAAAAAAAAAAAAAAFNvdW5kSGFuZGxlcgAAAAF8bWluZgAAABBzbWhkAAAAAAAAAAAAAAAkZGluZgAAABxkcmVmAAAAAAAAAAEAAAAMdXJsIAAAAAEAAAFAc3RibAAAAH5zdHNkAAAAAAAAAAEAAABubXA0YQAAAAAAAAABAAAAAAAAAAAAAQAQAAAAAB9AAAAAAAA2ZXNkcwAAAAADgICAJQACAASAgIAXQBUAAAAAAB9AAAAA/wWAgIAFFYhW5QAGgICAAQIAAAAUYnRydAAAAAAAAB9AAAAA/wAAACBzdHRzAAAAAAAAAAIAAAAQAAAEAAAAAAEAAAKAAAAANHN0c2MAAAAAAAAAAwAAAAEAAAABAAAAAQAAAAIAAAAEAAAAAQAAAAMAAAAMAAAAAQAAABRzdHN6AAAAAAAAAAQAAAARAAAAHHN0Y28AAAAAAAAAAwAACLQAAAjGAAAI5AAAABpzZ3BkAQAAAHJvbGwAAAACAAAAAf//AAAAHHNiZ3AAAAAAcm9sbAAAAAEAAAARAAAAAQAAAD11ZHRhAAAANW1ldGEAAAAAAAAAIWhkbHIAAAAAAAAAAG1kaXJhcHBsAAAAAAAAAAAAAAAACGlsc3QAAAAIZnJlZQAAA0BtZGF0AAACsQYF//+t3EXpvebZSLeWLNgg2SPu73gyNjQgLSBjb3JlIDE2NSByMzIyMyAwNDgwY2IwIC0gSC4yNjQvTVBFRy00IEFWQyBjb2RlYyAtIENvcHlsZWZ0IDIwMDMtMjAyNSAtIGh0dHA6Ly93d3cudmlkZW9sYW4ub3JnL3gyNjQuaHRtbCAtIG9wdGlvbnM6IGNhYmFjPTEgcmVmPTE2IGRlYmxvY2s9MTotMzotMyBhbmFseXNlPTB4MzoweDEzMyBtZT11bWggc3VibWU9MTAgcHN5PTEgcHN5X3JkPTIuMDA6MC43MCBtaXhlZF9yZWY9MSBtZV9yYW5nZT0yNCBjaHJvbWFfbWU9MSB0cmVsbGlzPTIgOHg4ZGN0PTEgY3FtPTAgZGVhZHpvbmU9MjEsMTEgZmFzdF9wc2tpcD0xIGNocm9tYV9xcF9vZmZzZXQ9LTQgdGhyZWFkcz0xIGxvb2thaGVhZF90aHJlYWRzPTEgc2xpY2VkX3RocmVhZHM9MCBucj0wIGRlY2ltYXRlPTEgaW50ZXJsYWNlZD0wIGJsdXJheV9jb21wYXQ9MCBjb25zdHJhaW5lZF9pbnRyYT0wIGJmcmFtZXM9OCBiX3B5cmFtaWQ9MiBiX2FkYXB0PTIgYl9iaWFzPTAgZGlyZWN0PTMgd2VpZ2h0Yj0xIG9wZW5fZ29wPTAgd2VpZ2h0cD0yIGtleWludD0yNTAga2V5aW50X21pbj0yIHNjZW5lY3V0PTQwIGludHJhX3JlZnJlc2g9MCByY19sb29rYWhlYWQ9NjAgcmM9Y3JmIG1idHJlZT0xIGNyZj0yMy4wIHFjb21wPTAuNjAgcXBtaW49MCBxcG1heD02OSBxcHN0ZXA9NCBpcF9yYXRpbz0xLjQwIGFxPTE6MS4yMACAAAAAEWWIgQAC+c/+99S3zLLuByOBAAAACkGaCG2IK5z//vABGCAHAAAACkGeECcQWzn/jIEBGCAHARggBwEYIAcBGCAHAAAACgGeGE1IK5z/koABGCAHARggBwEYIAcBGCAHARggBwEYIAcBGCAHARggBwEYIAcBGCAHARggBwEYIAc=';
+async function pantallaEncendida(on) {
+  if (on) {
+    if (bloqueo) return;
+    if ('wakeLock' in navigator) { try { bloqueo = await navigator.wakeLock.request('screen'); bloqueo.addEventListener('release', () => { bloqueo = null; }); return; } catch { /* sigue con el respaldo */ } }
+    try { // respaldo: un vídeo mudo en bucle mantiene la pantalla despierta en teléfonos antiguos
+      if (!video) { video = document.createElement('video'); video.setAttribute('playsinline', ''); video.setAttribute('muted', ''); video.muted = true; video.loop = true; video.src = VIDEO;
+        video.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;bottom:0;left:0'; document.body.appendChild(video); }
+      const pr = video.play(); if (pr && pr.catch) pr.catch(() => {});
+    } catch { /* sin respaldo */ }
+  } else {
+    try { if (bloqueo) await bloqueo.release(); } catch { /* ya suelto */ } bloqueo = null;
+    try { if (video) video.pause(); } catch { /* nada */ }
+  }
+}
+
+// ---------------- reloj: fases de trabajo, cambio de lado y descanso ----------------
+let reloj = null;
+function correr(fases, ref) { desbloquear(); reloj = { fases, i: -1, ref }; siguienteFase(true); pantallaEncendida(true); }
+function siguienteFase(primera) {
+  if (!reloj) return;
+  if (!primera && reloj.f && reloj.f.alFin) reloj.f.alFin();
+  let f = null;
+  while (!f) { reloj.i++; if (reloj.i >= reloj.fases.length) break; f = reloj.fases[reloj.i]; if (typeof f === 'function') f = f(); }
+  if (!f) { terminar(); return; }
+  if (!primera) (f.modo === 'trabajo' ? SON.trabajo : SON.descanso)();
+  reloj.f = f; reloj.fin = Date.now() + f.seg * 1000; reloj.pausa = null; reloj.ult = null;
+  $('reloj').hidden = false; tic();
+}
+function terminar() {
+  SON.fin(); const r = reloj; reloj = null; pantallaEncendida(false);
+  const el = $('reloj'); el.className = 'reloj descanso'; $('r-modo').textContent = 'Terminado'; $('r-t').textContent = '0:00';
+  setTimeout(() => { if (!reloj) el.hidden = true; }, 4000); return r;
+}
+function pararReloj() { reloj = null; $('reloj').hidden = true; pantallaEncendida(false); }
 function tic() {
-  if (!reloj) return; const el = $('reloj'), quedan = Math.max(0, Math.ceil((reloj.fin - Date.now()) / 1000));
-  el.className = 'reloj ' + reloj.modo; $('r-modo').textContent = reloj.modo === 'trabajo' ? 'Trabajo' : 'Descanso'; $('r-que').textContent = reloj.que;
-  $('r-t').textContent = `${Math.floor(quedan / 60)}:${String(quedan % 60).padStart(2, '0')}`;
-  if (quedan <= 3 && quedan > 0 && reloj.ult !== quedan) { reloj.ult = quedan; pitido(660, 90); }
-  if (Date.now() >= reloj.fin) { const sig = reloj.luego; reloj = null; pitido(990, 380); if (sig) sig(); else setTimeout(() => { if (!reloj) $('reloj').hidden = true; }, 1500); }
+  if (!reloj || !reloj.f) return; const f = reloj.f, el = $('reloj');
+  const quedan = reloj.pausa != null ? Math.ceil(reloj.pausa / 1000) : Math.max(0, Math.ceil((reloj.fin - Date.now()) / 1000));
+  el.className = 'reloj ' + f.modo + (reloj.pausa != null ? ' pausado' : '');
+  $('r-modo').textContent = f.titulo + (reloj.pausa != null ? ' · en pausa' : ''); $('r-que').textContent = f.que;
+  $('r-t').textContent = mmss(quedan);
+  $('r-fin').textContent = f.modo === 'trabajo' ? 'Listo' : 'Saltar';
+  $('r-pausa').textContent = reloj.pausa != null ? 'Seguir' : 'Pausa';
+  if (reloj.pausa != null) return;
+  if (quedan <= 3 && quedan > 0 && reloj.ult !== quedan) { reloj.ult = quedan; SON.cuenta(); }
+  if (Date.now() >= reloj.fin) siguienteFase(false);
 }
 setInterval(tic, 250);
-$('r-mas').addEventListener('click', () => { if (reloj) { reloj.fin += 15000; tic(); } });
-$('r-fin').addEventListener('click', () => { if (!reloj) return; reloj.fin = Date.now(); tic(); });
+$('r-mas').addEventListener('click', () => { if (!reloj) return; if (reloj.pausa != null) reloj.pausa += 15000; else reloj.fin += 15000; tic(); });
+$('r-fin').addEventListener('click', () => { if (reloj) siguienteFase(false); });
+$('r-x').addEventListener('click', pararReloj);
+$('r-pausa').addEventListener('click', () => { if (!reloj) return; if (reloj.pausa != null) { reloj.fin = Date.now() + reloj.pausa; reloj.pausa = null; pantallaEncendida(true); } else { reloj.pausa = Math.max(0, reloj.fin - Date.now()); } tic(); });
+
+function fasesSerie(x, j, k) {
+  const fs = [], L = x.lados, n = L ? L.length : 1;
+  if (x.trabajo) for (let i = 0; i < n; i++) {
+    if (i > 0) fs.push({ modo: 'cambio', seg: 5, titulo: 'Cambia', que: `${x.n} · ahora: ${L[i]}` });
+    fs.push({ modo: 'trabajo', seg: x.trabajo, titulo: n > 1 ? `Trabajo · ${L[i]} (${i + 1} de ${n})` : 'Trabajo', que: `${x.n} · serie ${k + 1} de ${x.s}${n > 1 ? ' · ' + L[i] : ''}` });
+  }
+  fs.push(() => { const h = hechasDe(x), sig = Array.from({ length: x.s }, (_, i) => i).find((i) => !h.includes(i));
+    return sig !== undefined ? { modo: 'descanso', seg: x.r, titulo: 'Descanso', que: `${x.n} · siguiente: serie ${sig + 1} de ${x.s}` }
+      : { modo: 'descanso', seg: Math.min(x.r, 90), titulo: 'Descanso', que: `${x.n} terminado · pasa al siguiente ejercicio` }; });
+  return fs;
+}
+// asaltos: trabajo y descanso que se repiten, con el número de asalto
+function fasesAsaltos(n, w, d, nombres, palabra, alFinRonda) {
+  const fs = [{ modo: 'cambio', seg: 5, titulo: 'Prepárate', que: `${palabra} 1 de ${n}${nombres && nombres[0] ? ' · ' + nombres[0] : ''}` }];
+  for (let i = 0; i < n; i++) {
+    fs.push({ modo: 'trabajo', seg: w, titulo: `${palabra} ${i + 1} de ${n}`, que: (nombres && nombres[i]) || 'Trabajo', alFin: alFinRonda ? () => alFinRonda(i) : null });
+    if (i < n - 1) fs.push({ modo: 'descanso', seg: d, titulo: `Descanso · viene el ${palabra.toLowerCase()} ${i + 2}`, que: nombres && nombres[i + 1] ? 'Siguiente: ' + nombres[i + 1] : 'Respira y vuelve a la guardia' });
+  }
+  return fs;
+}
+
+// ---------------- paneles: asaltos, diario y ajustes ----------------
+function pintarAsaltos() {
+  const pres = [[180, 60], [120, 60], [30, 30]];
+  $('p-asaltos').innerHTML = `<h3 id="t-asaltos">Reloj de asaltos</h3>
+    <div class="fila">${pres.map(([w, d]) => `<button type="button" class="boton preset" data-pre="${w},${d}" aria-pressed="${ajustes.w === w && ajustes.d === d}">${mmss(w)} / ${mmss(d)}</button>`).join('')}</div>
+    <div class="ajuste"><span>Trabajo</span><button type="button" data-aj="w,-15" aria-label="Menos trabajo">−</button><output>${mmss(ajustes.w)}</output><button type="button" data-aj="w,15" aria-label="Más trabajo">+</button></div>
+    <div class="ajuste"><span>Descanso</span><button type="button" data-aj="d,-15" aria-label="Menos descanso">−</button><output>${mmss(ajustes.d)}</output><button type="button" data-aj="d,15" aria-label="Más descanso">+</button></div>
+    <div class="ajuste"><span>Asaltos</span><button type="button" data-aj="n,-1" aria-label="Un asalto menos">−</button><output>${ajustes.n}</output><button type="button" data-aj="n,1" aria-label="Un asalto más">+</button></div>
+    ${suave() ? '<p class="nota-suave" style="margin:0">Semana suave: mejor 2:00 / 1:00.</p>' : ''}
+    <button type="button" class="boton oro" data-asaltos="1">▶ Empezar ${ajustes.n} asaltos</button>
+    <small style="color:var(--muted)">Suena y vibra al empezar y acabar cada asalto, y distinto al terminar el último. La pantalla sigue encendida mientras corre.</small>`;
+}
+function pintarDiario() {
+  const claves = new Set([...Object.keys(diario), ...Object.keys(notas).filter((k) => typeof notas[k] === 'string' && notas[k].trim())]);
+  const filas = [...claves].sort().reverse().slice(0, 12).map((k) => { const [f, p, d] = k.split('|'); const pr = PROGRAMAS[p], dd = pr && pr.dias[+d]; if (!dd) return '';
+    const r = diario[k], nt = typeof notas[k] === 'string' ? notas[k].trim() : '';
+    return `<li><b>${esc(fechaCorta(f))}</b> · ${esc(pr.nombre)} · ${DIAS[+d]} ${esc(dd.foco)}${r ? ` · ${r.h}/${r.t} series${r.h >= r.t ? ' ✓' : ''}` : ''}${nt ? `<br><span>${esc(nt.length > 140 ? nt.slice(0, 140) + '…' : nt)}</span>` : ''}</li>`; }).join('');
+  $('p-diario').innerHTML = `<h3 id="t-diario">Diario</h3>${filas ? `<ul class="diario-lista">${filas}</ul>` : '<p style="margin:0;color:var(--muted)">Aún no hay sesiones. Al marcar series y escribir en «Diario de hoy», aparecen aquí y no se borran de un día para otro.</p>'}
+    <div class="fila"><button type="button" class="boton" data-exportar="1">Guardar copia del historial</button><label class="boton" style="display:inline-flex;align-items:center">Cargar copia<input type="file" accept="application/json,.json" id="importar" hidden></label></div>
+    <small style="color:var(--muted)" id="msg-copia">Todo vive en este teléfono. La copia sirve por si borras el navegador o cambias de móvil.</small>`;
+}
+function pintarAjustes() {
+  $('p-ajustes').innerHTML = `<h3 id="t-ajustes">Ajustes</h3>
+    <label class="check"><input type="checkbox" id="auto" ${ajustes.auto ? 'checked' : ''}> Arrancar el reloj al marcar una serie</label>
+    <p style="margin:0">Ciclo de 4 semanas: vas por la semana ${semCiclo()} (la 4.ª es suave). Empezó el ${esc(fechaCorta(ciclo))}.</p>
+    <button type="button" class="boton" data-ciclo="1">Empezar el ciclo esta semana</button>
+    <small style="color:var(--muted)">Con la app cerrada no puede avisarte a una hora: pon una alarma en el reloj del teléfono para entrenar.</small>`;
+}
 
 // ---------------- eventos ----------------
+document.addEventListener('pointerdown', desbloquear, { passive: true });
 document.addEventListener('click', (ev) => {
   const t = ev.target.closest('button'); if (!t) return;
-  if (t.dataset.p) { if (!valido(t.dataset.p)) return; prog = t.dataset.p; guardar('rj-prog', prog); pararReloj(); pintarTabs(); pintarDia(); return; }
+  desbloquear();
+  if (t.dataset.p) { if (!valido(t.dataset.p)) return; prog = t.dataset.p; guardar('rj-prog', prog);
+    try { history.replaceState(null, '', '#' + prog); } catch { /* sin historial */ }
+    pararReloj(); pintarTabs(); pintarDia(); window.scrollTo({ top: 0 }); return; }
   if (t.dataset.d !== undefined) { dia = +t.dataset.d; pararReloj(); pintarTabs(); pintarDia(); window.scrollTo({ top: 0 }); return; }
+  if (t.dataset.suave) { guardar('rj-suave-no', t.dataset.suave === 'no' ? semAbs() : 0); pintarTabs(); pintarDia(); pintarAsaltos(); return; }
+  if (t.dataset.ciclo) { ciclo = fechaDe(lunesDe(new Date())); guardar('rj-ciclo', ciclo); guardar('rj-suave-no', 0); pintarTabs(); pintarDia(); pintarAsaltos(); pintarAjustes(); return; }
+  if (t.dataset.pre) { const [w, d] = t.dataset.pre.split(',').map(Number); ajustes.w = w; ajustes.d = d; guardar('rj-ajustes', ajustes); pintarAsaltos(); return; }
+  if (t.dataset.aj) { const [k, dv] = t.dataset.aj.split(','); const lim = { w: [15, 600], d: [0, 300], n: [1, 12] }[k]; ajustes[k] = Math.min(lim[1], Math.max(lim[0], ajustes[k] + Number(dv))); guardar('rj-ajustes', ajustes); pintarAsaltos(); return; }
+  if (t.dataset.asaltos) { correr(fasesAsaltos(ajustes.n, ajustes.w, ajustes.d, null, 'Asalto', null), 'asaltos'); return; }
+  if (t.dataset.asaltosDia) { const ej = ejercicios(), rondas = ej.map((x, j) => ({ x, j })).filter(({ x }) => x.trabajo >= 120 && x.s === 1);
+    correr(fasesAsaltos(rondas.length, rondas[0].x.trabajo, 60, rondas.map(({ x }) => x.n.replace(/^Asalto \d+ · /, '')), 'Asalto', (i) => marcarSerie(rondas[i].x, rondas[i].j, 0, true)), 'asaltos-dia'); return; }
+  if (t.dataset.seg !== undefined) { const j = +t.dataset.seg, x = ejercicios()[j], palabra = ['sombra', 'combo', 'cuerda'].includes(x.m) ? 'Asalto' : 'Serie';
+    correr(fasesAsaltos(x.s, x.trabajo, x.r, Array.from({ length: x.s }, () => x.n), palabra, (i) => marcarSerie(x, j, i, true)), 'seg-' + j); return; }
+  if (t.dataset.exportar) { exportar(); return; }
   if (t.classList.contains('serie')) {
-    const j = +t.dataset.j, k = +t.dataset.k, x = PROGRAMAS[prog].dias[dia].ej[j], c = clave(j), h = hechos.s[c] || [];
-    revisarFecha(); const ref = `${c}|${k}`, ya = h.includes(k); hechos.s[c] = ya ? h.filter((y) => y !== k) : [...h, k]; guardar('rj-hechos', hechos); marcar();
+    revisarFecha();
+    const j = +t.dataset.j, k = +t.dataset.k, x = ejercicios()[j], ya = hechasDe(x).includes(k), ref = `${clave(x)}|${k}`;
+    marcarSerie(x, j, k, !ya);
     if (ya) { if (reloj && reloj.ref === ref) pararReloj(); return; }
-    // al terminar se mira el estado REAL: la primera serie pendiente, o «terminado» si ya no queda ninguna
-    const descanso = () => { const hecho = hechos.s[c] || [], sig = Array.from({ length: x.s }, (_, i) => i).find((i) => !hecho.includes(i));
-      if (sig !== undefined) arrancar('descanso', x.r, `${x.n} · siguiente: serie ${sig + 1} de ${x.s}`, null, ref); else arrancar('descanso', Math.min(x.r, 90), `${x.n} terminado · pasa al siguiente ejercicio`, null, ref); };
-    if (x.trabajo) arrancar('trabajo', x.trabajo, `${x.n} · serie ${k + 1} de ${x.s}`, descanso, ref); else descanso();
+    if (ajustes.auto) correr(fasesSerie(x, j, k), ref);
   }
 });
+document.addEventListener('change', (ev) => {
+  if (ev.target.id === 'auto') { ajustes.auto = ev.target.checked; guardar('rj-ajustes', ajustes); }
+  if (ev.target.id === 'importar' && ev.target.files && ev.target.files[0]) importar(ev.target.files[0]);
+});
+let tNota = null;
+document.addEventListener('input', (ev) => {
+  if (ev.target.id !== 'nota-dia') return; const k = `${HOY.fecha}|${prog}|${dia}`, val = ev.target.value;
+  clearTimeout(tNota); tNota = setTimeout(() => { if (val.trim()) notas[k] = val.slice(0, 2000); else delete notas[k]; guardar('rj-notas', notas); pintarDiario(); }, 400);
+});
+function exportar() {
+  try { const datos = { app: 'rutina-jay', v: 2, fecha: HOY.fecha, series, diario, notas, pesos, ciclo, ajustes };
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(datos)], { type: 'application/json' })); a.download = `rutina-jay-${HOY.fecha}.json`;
+    document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    $('msg-copia').textContent = 'Copia guardada en las descargas del teléfono.'; } catch { $('msg-copia').textContent = 'No se pudo guardar la copia en este navegador.'; }
+}
+function importar(archivo) {
+  const lector = new FileReader();
+  lector.onload = () => { try { const d = JSON.parse(lector.result); if (!d || d.app !== 'rutina-jay') throw new Error('archivo');
+      series = { ...series, ...objeto(d.series) }; diario = { ...diario, ...objeto(d.diario) }; notas = { ...notas, ...objeto(d.notas) }; pesos = { ...pesos, ...objeto(d.pesos) };
+      guardar('rj-series', series); guardar('rj-diario', diario); guardar('rj-notas', notas); guardar('rj-pesos', pesos);
+      pintarTabs(); pintarDia(); pintarDiario(); $('msg-copia').textContent = 'Copia cargada.'; } catch { $('msg-copia').textContent = 'Ese archivo no es una copia de Rutina Jay.'; } };
+  lector.readAsText(archivo);
+}
+
+// si la app queda abierta y pasa la medianoche (o vuelves a ella otro día), se recalcula el «hoy»
+function revisarFecha() { if (HOY.fecha !== hoyLocal()) { HOY = infoHoy(); pintarTabs(); pintarDia(); pintarDiario(); pintarAsaltos(); pintarAjustes(); } }
+document.addEventListener('visibilitychange', () => { if (document.hidden) return; revisarFecha(); if (reloj && reloj.pausa == null) pantallaEncendida(true); });
+setInterval(revisarFecha, 30000);
+const red = () => { $('offline').hidden = navigator.onLine !== false; };
+window.addEventListener('online', red); window.addEventListener('offline', red);
 
 // ---------------- animación (solo las demos visibles) ----------------
 const visibles = new Set(), quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const io = 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((x) => (x.isIntersecting ? visibles.add(x.target) : visibles.delete(x.target)))) : null;
 function observar() { document.querySelectorAll('canvas[data-m]').forEach((cv) => { dibujar(cv, MOV[cv.dataset.m] || MOV.movilidad, 0); if (io) io.observe(cv); else visibles.add(cv); }); }
 function bucle(t) { if (!quieto) for (const cv of visibles) if (cv.isConnected) dibujar(cv, MOV[cv.dataset.m] || MOV.movilidad, t); requestAnimationFrame(bucle); }
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => document.querySelectorAll('canvas[data-m]').forEach((cv) => dibujar(cv, MOV[cv.dataset.m], 0)));
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => document.querySelectorAll('canvas[data-m]').forEach((cv) => dibujar(cv, MOV[cv.dataset.m] || MOV.movilidad, 0)));
 
-pintarTabs(); pintarDia(); requestAnimationFrame(bucle);
+red(); pintarTabs(); pintarDia(); pintarAsaltos(); pintarDiario(); pintarAjustes(); requestAnimationFrame(bucle);
 })();
 </script>
 
